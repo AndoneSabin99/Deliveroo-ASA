@@ -116,20 +116,7 @@ client.onParcelsSensing( async ( perceived_parcels ) => {
                     }
                 }
             });
-        /*
-            console.log(reply);
-        
-            if (reply){
-                console.log("My position " + me.x + " " + me.y);
-                if ((me.patrolling || !me.pickingup) && !me.deliverying){
-                    me.patrolling = false;
-                    me.pickingup = true;
-                    me.deliverying = false;
-                    Agent.push( [ 'go_pick_up', p.x, p.y ] );
-                }else{
-                    Agent.parcelsToPick.push([ 'go_pick_up', p.x, p.y ]);
-                }
-            }  */           
+                       
         }
         console.log("Parcel id " + p.id + " and parcel "+ p);
         parcels.set( p.id, p) 

@@ -129,7 +129,7 @@ export class IntentionRevision {
                         continue;
                     }
                 }
-
+/*
                 // Start achieving intention
                 await intention.achieve()
                 // Catch eventual error and continue
@@ -139,7 +139,31 @@ export class IntentionRevision {
                         me.patrolling = false;
                         me.pickingup = false;
                         me.deliverying = false;
-                } );
+/*
+                        if (intention.predicate[0] == 'patrolling'){
+                            console.log("IT SHOULD WORK...")
+                            me.patrolling = true;
+                            this.push( [ "patrolling" ] );
+                        }*/
+                        
+                //} );
+
+                try{
+                    await intention.achieve()
+                }catch (error) {
+                    if ( !intention.stopped )
+                    console.error( 'Failed intention', ...intention.predicate, 'with error:', error )
+                    me.patrolling = false;
+                    me.pickingup = false;
+                    me.deliverying = false;
+/*
+                    if (intention.predicate[0] == 'patrolling'){
+                        console.log("IT SHOULD WORK...")
+                        me.patrolling = true;
+                        this.push( [ "patrolling" ] );
+                    }*/
+                    continue;
+                }
 
             }
             else {

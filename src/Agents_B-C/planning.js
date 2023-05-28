@@ -61,6 +61,7 @@ class Patrolling extends Plan {
 
 
         //console.log("NEW PLAN");
+        //console.log("The me.picking is " + me.pickingup);
         if(me.pickingup){
             this.stop();
             if ( this.stopped ) throw ['stopped']; // if stopped then quit
@@ -73,9 +74,11 @@ class Patrolling extends Plan {
         moveBeliefset.declare('me me');
         moveBeliefset.undeclare('arrived');
 
+        
 
         for (let [id, agent] of agentsSensed.entries()){
             moveBeliefset.declare('blocked t-'+agent.x+'-'+agent.y);
+            //console.log(agent);
         }
 
         let tile_list = Array.from( map.tiles.values() );
@@ -111,8 +114,16 @@ class Patrolling extends Plan {
 
         }
 
+
         let parcelSpawnerTileList = Array.from( map.tiles.values() ).filter( ({parcelSpawner}) => parcelSpawner );
+        //console.log(parcelSpawnerTileList);
         let reachableParcelSpawnerTileList = parcelSpawnerTileList.filter((tile) => distance(me,tile) > 0)
+        //console.log(reachableParcelSpawnerTileList);
+
+        if (reachableParcelSpawnerTileList.length == 0){
+            reachableParcelSpawnerTileList = parcelSpawnerTileList;
+        }
+
         let i = Math.floor( Math.random() * reachableParcelSpawnerTileList.length );
         let destinationTile = reachableParcelSpawnerTileList.at(i);
         moveBeliefset.declare("parcelSpawner t-"+destinationTile.x+"-"+destinationTile.y);
@@ -123,7 +134,6 @@ class Patrolling extends Plan {
             moveBeliefset.toPddlString(),
             'and (arrived)'
         )
-
 
         let problem = pddlProblem.toPddlString();
         //console.log( problem );
@@ -248,11 +258,7 @@ class GoPickUp extends Plan {
                                                 ,{ name: 'move_left', executor: () => this.planMove('left').catch(err => {throw err})}
                                                 ,{ name: 'move_up', executor: () =>  this.planMove('up').catch(err => {throw err})}
                                                 ,{ name: 'move_down', executor: () =>  this.planMove('down').catch(err => {throw err})}
-                                                ,{ name: 'pickup', executor: () => (
-                                                                                                client.pickup(),
-                                                                                                me.pickingup = false,
-                                                                                                me.carrying = true
-                                                                                                ) } );
+                                                ,{ name: 'pickup', executor: () => this.checkIfArrived(x,y).catch(err => {throw err})});
 
         pddlExecutor.exec( plan ).catch(err => {this.RedoGoPickUp(x,y)});
 
@@ -280,6 +286,17 @@ class GoPickUp extends Plan {
         }else{
             //console.log("PICKUP PLAN BLOCKED");
             throw ['stopped'];
+        }
+    }
+
+    async checkIfArrived(x,y){
+        if (Math.round(me.x) == x && Math.round(me.y) == y){
+            client.pickup();
+            me.pickingup = false;
+            me.carrying = true;
+        }else{
+            this.stop();
+            if ( this.stopped ) throw ['stopped']; // if stopped then quit
         }
     }
 }

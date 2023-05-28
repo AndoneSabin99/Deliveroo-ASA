@@ -181,8 +181,8 @@ export class IntentionRevision {
         // console.log( 'IntentionRevisionReplace.push', predicate );
 
         // // Check if already queued
-        // if ( this.intention_queue.find( (p) => p.join(' ') == predicate.join(' ') ) )
-        //     return;
+        if ( this.intention_queue.find( (p) => p.join(' ') == predicate.join(' ') ) )
+             return;
         
         // // Reschedule current
         //if ( this.currentIntention )

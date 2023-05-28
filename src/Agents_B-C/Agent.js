@@ -96,6 +96,8 @@ client.onParcelsSensing( async ( perceived_parcels ) => {
                 y_m: me.y
             } ).then( (answer) => {
                 console.log(answer);
+
+                const predicate = [ 'go_pick_up', p.x, p.y ];
         
                 if (answer == "true"){
                     console.log("My position " + me.x + " " + me.y);
@@ -103,9 +105,11 @@ client.onParcelsSensing( async ( perceived_parcels ) => {
                         me.patrolling = false;
                         me.pickingup = true;
                         me.deliverying = false;
-                        Agent.push( [ 'go_pick_up', p.x, p.y ] );
+                        Agent.push( predicate );
                     }else{
-                        Agent.parcelsToPick.push([ 'go_pick_up', p.x, p.y ]);
+                        if ( !Agent.parcelsToPick.find( (p) => p.join(' ') == predicate.join(' ') ) ){
+                            Agent.parcelsToPick.push([ 'go_pick_up', p.x, p.y ]);
+                        }               
                     }
             }
             });

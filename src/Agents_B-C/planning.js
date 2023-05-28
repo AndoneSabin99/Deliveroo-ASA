@@ -365,10 +365,10 @@ class GoDeliver extends Plan {
 
         //console.log( plan );
 
-        const pddlExecutor = new PddlExecutor( { name: 'move_right', executor: () => (this.planMove('right')) }
-                                            ,{ name: 'move_left', executor: () => (this.planMove('left')) }
-                                            ,{ name: 'move_up', executor: () => (this.planMove('up')) }
-                                            ,{ name: 'move_down', executor: () => (this.planMove('down')) }
+        const pddlExecutor = new PddlExecutor( { name: 'move_right', executor: () => this.planMove('right').catch(err => {throw err}) }
+                                            ,{ name: 'move_left', executor: () => this.planMove('left').catch(err => {throw err}) }
+                                            ,{ name: 'move_up', executor: () => this.planMove('up').catch(err => {throw err}) }
+                                            ,{ name: 'move_down', executor: () => this.planMove('down').catch(err => {throw err}) }
                                                 ,{ name: 'putdown', executor: () => (
                                                                                             client.putdown(),
                                                                                             me.deliverying = false,
@@ -383,17 +383,30 @@ class GoDeliver extends Plan {
 
     async RedoGoPutdown(){
         console.log("Redo planning");
-        Agent.push( [ 'go_deliver' ] );
+        if (me.carrying_map.size > 0){
+            Agent.push( [ 'go_deliver' ] );
+        }else{
+            me.patrolling = false;
+            me.pickingup = false;
+            me.deliverying = false;
+            me.carrying = false;
+        }
+        return true;
     }
 
     async planMove(direction){
 
         if (!this.stopped){
             moved = await client.move(direction);
-            if (!moved){
+            //console.log("RIGHT NOW I HAVE THESE PARCELS: " + me.carrying_map.size);
+            if (!moved || me.carrying_map.size == 0){
                 this.stop();
                 if ( this.stopped ) throw ['stopped']; // if stopped then quit
             }
+
+
+
+
         }else{
             console.log("GO DELIVER PLAN BLOCKED");
             throw ['stopped'];

@@ -151,8 +151,13 @@ export class IntentionRevision {
                         me.pickingup = true;
                         this.push(nextAction);
                     }else{
-                        //let parcels_carrying = me.carrying_map.size;
-                        //console.log("parcels_carrying: " + parcels_carrying);
+                        let parcels_carrying = me.carrying_map.size;
+                        console.log("parcels_carrying: " + parcels_carrying);
+/*
+                        if (parcels_carrying == 0){
+                            me.carrying = false;
+                        }*/
+
                         if (me.carrying){
                             me.deliverying = true;
                             this.push( [ "go_deliver" ] );

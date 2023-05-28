@@ -89,17 +89,20 @@ client.onParcelsSensing( async ( perceived_parcels ) => {
     for (const p of perceived_parcels) {
         if ( ! parcels.has(p.id) && p.carriedBy == null){
             console.log("I SENSE A NEW PARCEL AT POSITION "+p.x+" "+p.y);
+            const my_distance = distance(me, {x: p.x, y: p.y});
+            console.log("My distance is " + my_distance);
             let reply = client.ask( id_ask, {
                 x_p: p.x,
                 y_p: p.y,
-                x_m: me.x,
-                y_m: me.y
+                teammate_distance: my_distance,
+                p_id: p.id,
+                parcel_to_pickup: p
             } ).then( (answer) => {
-                console.log(answer);
+                console.log("Answer from ask function" + answer);
 
                 const predicate = [ 'go_pick_up', p.x, p.y ];
         
-                if (answer == "true"){
+                if (answer == true){
                     console.log("My position " + me.x + " " + me.y);
                     if ((me.patrolling || !me.pickingup) && !me.deliverying){
                         me.patrolling = false;
@@ -108,10 +111,10 @@ client.onParcelsSensing( async ( perceived_parcels ) => {
                         Agent.push( predicate );
                     }else{
                         if ( !Agent.parcelsToPick.find( (p) => p.join(' ') == predicate.join(' ') ) ){
-                            Agent.parcelsToPick.push([ 'go_pick_up', p.x, p.y ]);
+                            Agent.parcelsToPick.push(predicate);
                         }               
                     }
-            }
+                }
             });
         /*
             console.log(reply);
@@ -128,6 +131,7 @@ client.onParcelsSensing( async ( perceived_parcels ) => {
                 }
             }  */           
         }
+        console.log("Parcel id " + p.id + " and parcel "+ p);
         parcels.set( p.id, p) 
         if ( p.carriedBy == me.id ) {
             me.carrying_map.set( p.id, p );
@@ -135,7 +139,7 @@ client.onParcelsSensing( async ( perceived_parcels ) => {
     }
     for ( const [id,p] of parcels.entries() ) {
         if ( ! perceived_parcels.find( p=>p.id==id ) ) {
-            parcels.delete( id ); 
+            //parcels.delete( id ); 
             me.carrying_map.delete( id );
         }
     }
@@ -150,28 +154,47 @@ client.onMsg( (id, name, msg, reply) => {
         let answer = "";
 
         //console.log("x: " + msg.x_p + " y: " + msg.y_p);
-        console.log("THE OTHER AGENT: " + distance(me,{x: msg.x_p,y: msg.y_p}) + " and THE AGENT THAT SENSED THE PARCEL: "+ distance({x: msg.x_m, y: msg.y_m},{x: msg.x_p,y: msg.y_p}));
-        if (distance(me,{x: msg.x_p, y: msg.y_p}) < distance({x: msg.x_m, y: msg.y_m},{x: msg.x_p, y: msg.y_p}) && distance(me,{x: msg.x_p, y: msg.y_p}) > 0){
+        const my_distance = distance(me,{x: msg.x_p,y: msg.y_p});
+        console.log("ME: " + my_distance + " and TEAMMATE: "+ msg.teammate_distance);
+
+        console.log("P_ID " + msg.p_id + " AND PARCEL TO PICKUP " + msg.parcel_to_pickup);
+        parcels.set( msg.p_id, msg.parcel_to_pickup);
+
+
+        if( my_distance == 0 ){
+            answer = true;
+        }else{
+            if( msg.teammate_distance == 0 ){
+                answer = false;
+            }else{
+                if (my_distance < msg.teammate_distance){
+                    answer = false;
+                }else{
+                    answer = true;
+                }
+            }
+        }
+
+        console.log(answer);
+        if (!answer){
+            const predicate = [ 'go_pick_up', msg.x_p, msg.y_p ];
             if ((me.patrolling || !me.pickingup) && !me.deliverying){
                 me.patrolling = false;
                 me.pickingup = true;
                 me.deliverying = false;
-                Agent.push( [ 'go_pick_up', msg.x_p, msg.y_p ] );
+                Agent.push( predicate );
             }else{
-                Agent.parcelsToPick.push([ 'go_pick_up', msg.x_p, msg.y_p ]);
+                if ( !Agent.parcelsToPick.find( (p) => p.join(' ') == predicate.join(' ') ) ){
+                    Agent.parcelsToPick.push(predicate);
+                }
             }
-            answer = "false";
-            console.log("THE OTHER AGENT is closer");
-        }else{
-            answer = "true";
-            console.log("THE AGENT THAT SENSED THE PARCEL is closer");
         }
 
         console.log(answer);
         if (reply)
             try { reply(answer) } catch { (error) => console.error(error) }
 
-    //}
+    
   
 });
 

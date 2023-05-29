@@ -129,24 +129,6 @@ export class IntentionRevision {
                         continue;
                     }
                 }
-/*
-                // Start achieving intention
-                await intention.achieve()
-                // Catch eventual error and continue
-                .catch( error => {
-                    if ( !intention.stopped )
-                        console.error( 'Failed intention', ...intention.predicate, 'with error:', error )
-                        me.patrolling = false;
-                        me.pickingup = false;
-                        me.deliverying = false;
-/*
-                        if (intention.predicate[0] == 'patrolling'){
-                            console.log("IT SHOULD WORK...")
-                            me.patrolling = true;
-                            this.push( [ "patrolling" ] );
-                        }*/
-                        
-                //} );
 
                 try{
                     await intention.achieve()
@@ -156,12 +138,6 @@ export class IntentionRevision {
                     me.patrolling = false;
                     me.pickingup = false;
                     me.deliverying = false;
-/*
-                    if (intention.predicate[0] == 'patrolling'){
-                        console.log("IT SHOULD WORK...")
-                        me.patrolling = true;
-                        this.push( [ "patrolling" ] );
-                    }*/
                     continue;
                 }
 
@@ -176,7 +152,7 @@ export class IntentionRevision {
                         this.push(nextAction);
                     }else{
                         let parcels_carrying = me.carrying_map.size;
-                        console.log("parcels_carrying: " + parcels_carrying);
+                        //console.log("parcels_carrying: " + parcels_carrying);
 /*
                         if (parcels_carrying == 0){
                             me.carrying = false;

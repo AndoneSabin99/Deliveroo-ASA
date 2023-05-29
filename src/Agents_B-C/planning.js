@@ -315,7 +315,7 @@ class GoDeliver extends Plan {
             if ( this.stopped ) throw ['stopped']; // if stopped then quit
             return true;
         }
-        console.log("PATROLLING: " + me.patrolling + " PICKINGUP: " + me.pickingup + " DELIVERING " + me.deliverying);
+        //console.log("PATROLLING: " + me.patrolling + " PICKINGUP: " + me.pickingup + " DELIVERING " + me.deliverying);
 
         const moveBeliefset = new Beliefset();
 

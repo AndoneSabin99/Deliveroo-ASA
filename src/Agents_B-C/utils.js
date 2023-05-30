@@ -35,7 +35,7 @@ export function isWorthPickup(x, y, reward){
     }
 }
 
-export function pickupParcel(x,y, id, reward){
+export function pickupParcel(x, y, id, reward){
     const predicate = [ 'go_pick_up', x, y, id ];
 
     if (!isWorthPickup(x, y, reward)){
@@ -48,7 +48,8 @@ export function pickupParcel(x,y, id, reward){
         const distanceDeliveryTile = distance(me,nearestDeliveryTile);
         const distanceParcel = distance(me,{x: x, y: y});
         if ( distanceParcel < distanceDeliveryTile){
-           me.state = state[2]
+            me.state = state[2]
+            me.actual_parcel_to_pick = id;
             Agent.push( predicate );
         }else{
             Agent.parcelsToPick.push(predicate);
@@ -56,6 +57,7 @@ export function pickupParcel(x,y, id, reward){
     }else{
         if (me.state != state[2]){
             me.state = state[2]
+            me.actual_parcel_to_pick = id;
             Agent.push( predicate );
         }else{
             //if ( !Agent.parcelsToPick.find( (p) => p.join(' ') == predicate.join(' ') ) ){

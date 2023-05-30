@@ -187,7 +187,7 @@ class GoPickUp extends Plan {
         return go_pick_up == 'go_pick_up';
     }
  
-    async execute ( go_pick_up, x, y ) {
+    async execute ( go_pick_up, x, y, id ) {
 
         //console.log("PATROLLING: " + me.patrolling + " PICKINGUP: " + me.pickingup + " DELIVERING " + me.deliverying);
         //if for some reason me.pickingup is false even tought we are still doing GoPickUp plan, we put it to true so we
@@ -264,17 +264,17 @@ class GoPickUp extends Plan {
                                                 ,{ name: 'move_down', executor: () =>  this.planMove('down').catch(err => {throw err})}
                                                 ,{ name: 'pickup', executor: () => this.checkIfArrived(x,y).catch(err => {throw err})});
 
-        pddlExecutor.exec( plan ).catch(err => {this.RedoGoPickUp(x,y)});
+        pddlExecutor.exec( plan ).catch(err => {this.RedoGoPickUp(x,y,id)});
 
         if ( this.stopped ) throw ['stopped']; // if stopped then quit
         return true;
 
     }
 
-    async RedoGoPickUp(x1, y1){
+    async RedoGoPickUp(x1, y1, id){
         //console.log("Redo planning");
         me.state = state[2]
-        Agent.push( [ 'go_pick_up', x1, y1 ] );
+        Agent.push( [ 'go_pick_up', x1, y1, id ] );
     }
 
     async planMove(direction){
@@ -377,7 +377,10 @@ class GoDeliver extends Plan {
 
         if (plan == undefined){
             me.state = state[0];
-            me.carrying = false;    // i need to put to false also me.carrying, otherwise it will try to deliver even 
+            if (me.carrying_map.size == 0){
+                me.carrying = false;
+            }
+            //me.carrying = false;    // i need to put to false also me.carrying, otherwise it will try to deliver even 
                                     // if there are no delivery tiles, resulting in doing nothing and blocking the path
                                     // to other agents
         }

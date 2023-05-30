@@ -40,6 +40,7 @@ export const me = { carrying_map: new Map() };
 me.state = state[0];
 me.carrying = false;
 me.alone = true;
+me.actual_parcel_to_pick = 'no_parcel';
 client.onYou( ( {id, name, x, y, score} ) => {
     me.id = id
     me.name = name

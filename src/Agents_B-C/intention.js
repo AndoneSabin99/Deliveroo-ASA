@@ -128,6 +128,12 @@ export class IntentionRevision {
                         console.log( 'Skipping intention because no more valid', intention.predicate );
                         continue;
                     }
+                    
+                    if (me.actual_parcel_to_pick != id){
+                        this.parcelsToPick.push(predicate);
+                        console.log("ALREADY PICKING UP A PARCEL. PUT THE OTHER ONE IN THE PARCELS TO PICK QUEUE");
+                        continue;
+                    }
                 }
 
                 try{
@@ -147,8 +153,9 @@ export class IntentionRevision {
                 if (me.state == state[0]){
                     //if i have other parcels to pick
                     if (this.parcelsToPick.length > 0){
-                        const nextAction = this.parcelsToPick.shift();
+                        const nextAction = this.parcelsToPick.shift();                 
                         me.state = state[2];
+                        me.actual_parcel_to_pick = nextAction[3];
                         this.push(nextAction);
                     }else{
                         if (me.carrying){

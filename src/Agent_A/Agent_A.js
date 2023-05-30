@@ -2,23 +2,15 @@ import { DeliverooApi } from "@unitn-asa/deliveroo-js-client";
 import EventEmitter from "events";
 import {IntentionRevision} from "./intention.js";
 import depth_search_daemon from "./depth_search_daemon.js";
-
-let token = "";
-
-if (process.argv[2] == "true"){
-    token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjRkYTIyZDJlZTAxIiwibmFtZSI6InRlc3QiLCJpYXQiOjE2ODMwNjE1Njd9.pc8sOfbi-ELN842HKYT8f94wtmTcGc54vdRKAolEQJw'
-}else{
-    token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjA1ZDIyYjI2MThkIiwibmFtZSI6ImFnZW50ZSIsImlhdCI6MTY4NDkxNDgzNn0.YNWe0LTIsKiwRapFKgkSUxWNVxzJmMWCRglt5RTkqbY'
-}
+import { default as config } from "../config.js";
 
 
-
-//CODE FOR AGENT B and C
+export const state = ['nothing', 'patrolling', 'pickingup', 'delivering'];
 
 //creating new client to apply script to our agent
 export const client = new DeliverooApi(
-    'http://localhost:8080',
-    token)
+    config.host,
+    config.token_1)
 
 //distance function, with use of depth_search
 const depth_search = depth_search_daemon(client);
@@ -29,11 +21,9 @@ export function distance( {x:x1, y:y1}, {x:x2, y:y2} ) {
 /**
  * Beliefset revision function
  */
-export const me = {};
-me.patrolling = false;
-me.pickingup = false;
+export const me = { carrying_map: new Map() };
+me.state = state[0];
 me.carrying = false;
-me.deliverying = false;
 client.onYou( ( {id, name, x, y, score} ) => {
     me.id = id
     me.name = name
@@ -76,37 +66,6 @@ client.onAgentsSensing( ( agents ) => {
             agentsSensed.set( a.id, a );
     }
 } )
-/*
-//parcel sensing
-export const parcels = new Map();
-client.onParcelsSensing( async ( perceived_parcels ) => {
-    if (process.argv[2] == "true"){
-        for (const p of perceived_parcels) {
-            if ( ! parcels.has(p.id) && p.carriedBy == null){
-                console.log("I SENSE A NEW PARCEL AT POSITION "+p.x+" "+p.y);
-                //Agent_B.stopCurrent();
-                parcels.set( p.id, p);
-                let reply = await client.ask( '05d22b2618d', {
-                    x_p: p.x,
-                    y_p: p.y,
-                    x_m: me.x,
-                    y_m: me.y
-                } );
-                console.log(reply);
-                if (reply == "true"){
-                    console.log("My position " + me.x + " " + me.y);
-                    if (me.patrolling || !me.pickingup){
-                        me.patrolling = false;
-                        me.pickingup = true;
-                        Agent.push( [ 'go_pick_up', p.x, p.y ] );
-                    }
-
-                }
-            }
-        }
-    }
-
-} )*/
 
 //parcel sensing
 export const parcels = new Map();
@@ -114,48 +73,26 @@ client.onParcelsSensing( async ( perceived_parcels ) => {
     for (const p of perceived_parcels) {
         if ( ! parcels.has(p.id) && p.carriedBy == null){
             console.log("I SENSE A NEW PARCEL AT POSITION "+p.x+" "+p.y);
-            parcels.set( p.id, p)
-            if ((me.patrolling || !me.pickingup) && !me.deliverying){
-                me.patrolling = false;
-                me.pickingup = true;
-                me.deliverying = false;
+            //parcels.set( p.id, p)
+            if (me.state != state[2] && me.state != state[3]){
+                me.state = state[2];
                 Agent.push( [ 'go_pick_up', p.x, p.y ] );
             }else{
                 Agent.parcelsToPick.push([ 'go_pick_up', p.x, p.y ]);
             }
         }
+        parcels.set( p.id, p) 
+        if ( p.carriedBy == me.id ) {
+            me.carrying_map.set( p.id, p );
+        }
+    }
+    for ( const [id,p] of parcels.entries() ) {
+        if ( ! perceived_parcels.find( p=>p.id==id ) ) {
+            //parcels.delete( id ); 
+            me.carrying_map.delete( id );
+        }
     }
 } )
-
-client.onMsg( (id, name, msg, reply) => {
-
-    if (process.argv[2] != "true"){
-        //console.log("new msg received from", name+':', msg);
-        let answer = "";
-
-        //console.log("x: " + msg.x_p + " y: " + msg.y_p);
-        console.log("C: " + distance(me,{x: msg.x_p,y: msg.y_p}) + " and B: "+ distance({x: msg.x_m, y: msg.y_m},{x: msg.x_p,y: msg.y_p}));
-        if (distance(me,{x: msg.x_p, y: msg.y_p}) < distance({x: msg.x_m, y: msg.y_m},{x: msg.x_p, y: msg.y_p}) && distance(me,{x: msg.x_p, y: msg.y_p}) > 0){
-            
-            if (me.patrolling || !me.pickingup){
-                me.patrolling = false;
-                me.pickingup = true;
-                Agent.push( [ 'go_pick_up', msg.x_p, msg.y_p ] );
-            }
-            answer = "false";
-            console.log("C is closer");
-        }else{
-            answer = "true";
-            console.log("B is closer");
-        }
-
-        if (reply)
-            try { reply(answer) } catch { (error) => console.error(error) }
-
-    }
-  
-});
-
 
 /**
  * Start intention revision loop for both agents

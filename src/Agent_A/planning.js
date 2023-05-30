@@ -1,6 +1,6 @@
 import { onlineSolver, PddlExecutor, PddlProblem, Beliefset, PddlDomain, PddlAction } from "@unitn-asa/pddl-client";
 import {readFile} from "./utils.js";
-import {me, client, agentsSensed, map, Agent} from "./Agent_A.js";
+import {me, client, agentsSensed, map, Agent, distance, state} from "./Agent_A.js";
 import {Intention} from "./intention.js";
 
 var moved = false;
@@ -60,22 +60,31 @@ class Patrolling extends Plan {
     async execute ( patrolling ) {
 
 
-        console.log("NEW PLAN");
-        await client.timer(100);
+        //console.log("NEW PLAN");
+        if(me.state != state[1]){
+            this.stop();
+            if ( this.stopped ) throw ['stopped']; // if stopped then quit
+            return true;
+        }
+        //console.log("PATROLLING: " + me.patrolling + " PICKINGUP: " + me.pickingup + " DELIVERING " + me.deliverying);
         const moveBeliefset = new Beliefset();
 
-        moveBeliefset.declare('at me t-'+me.x+'-'+me.y+'');
+        moveBeliefset.declare('at me t-'+Math.round(me.x)+'-'+Math.round(me.y)+'');
         moveBeliefset.declare('me me');
         moveBeliefset.undeclare('arrived');
 
+        
 
         for (let [id, agent] of agentsSensed.entries()){
             moveBeliefset.declare('blocked t-'+agent.x+'-'+agent.y);
+            //console.log(agent);
         }
 
         let tile_list = Array.from( map.tiles.values() );
+        //console.log(tile_list);
         for(let tile of tile_list){
 
+            //console.log("Distance from " + tile.x + " " + tile.y + " is " + distance(me,tile))
             moveBeliefset.declare("tile t-"+tile.x+"-"+tile.y);
 
             if(tile.delivery){
@@ -104,9 +113,18 @@ class Patrolling extends Plan {
 
         }
 
+
         let parcelSpawnerTileList = Array.from( map.tiles.values() ).filter( ({parcelSpawner}) => parcelSpawner );
-        let i = Math.floor( Math.random() * parcelSpawnerTileList.length );
-        let destinationTile = parcelSpawnerTileList.at(i);
+        //console.log(parcelSpawnerTileList);
+        let reachableParcelSpawnerTileList = parcelSpawnerTileList.filter((tile) => distance(me,tile) > 0)
+        //console.log(reachableParcelSpawnerTileList);
+
+        if (reachableParcelSpawnerTileList.length == 0){
+            reachableParcelSpawnerTileList = parcelSpawnerTileList;
+        }
+
+        let i = Math.floor( Math.random() * reachableParcelSpawnerTileList.length );
+        let destinationTile = reachableParcelSpawnerTileList.at(i);
         moveBeliefset.declare("parcelSpawner t-"+destinationTile.x+"-"+destinationTile.y);
 
         var pddlProblem = new PddlProblem(
@@ -116,7 +134,6 @@ class Patrolling extends Plan {
             'and (arrived)'
         )
 
-
         let problem = pddlProblem.toPddlString();
         //console.log( problem );
         let domain = await readFile('./domain-deliveroo.pddl' );
@@ -124,7 +141,7 @@ class Patrolling extends Plan {
         var plan = await onlineSolver( domain, problem );
 
         if (plan == undefined){
-            me.patrolling = false
+            me.state = state[0];
         }
 
         //console.log( plan );
@@ -133,14 +150,15 @@ class Patrolling extends Plan {
                                                 ,{ name: 'move_up', executor: () =>  this.planMove('up').catch(err => {throw err})}
                                                 ,{ name: 'move_down', executor: () =>  this.planMove('down').catch(err => {throw err})}
                                                 ,{ name: 'patrollingDestination', executor: () => (
-                                                                                                client.timer(100),
-                                                                                                //console.log("Arrived at cell"),
-                                                                                                me.patrolling = false
+                                                                                                me.state = state[0]
                                                                                                 ) } );
 
-        pddlExecutor.exec( plan ).catch(err => {me.patrolling = false;});
+        pddlExecutor.exec( plan ).catch(err => {
+            if (me.state == state[1]){
+                me.state = state[0]
+            }
+        });
 
-        await client.timer(100);
         if ( this.stopped ) throw ['stopped']; // if stopped then quit
 
         return true;
@@ -148,8 +166,9 @@ class Patrolling extends Plan {
 
     async planMove(direction){
 
+        //console.log("MY STATE FLAG 3: " + me.state);
+
         if (!this.stopped){
-            await client.timer(100);
             moved = await client.move(direction);
             if (!moved){
                 this.stop();
@@ -167,14 +186,22 @@ class GoPickUp extends Plan {
     static isApplicableTo ( go_pick_up, x, y ) {
         return go_pick_up == 'go_pick_up';
     }
-
+ 
     async execute ( go_pick_up, x, y ) {
 
-        await client.timer(100);
+        //console.log("PATROLLING: " + me.patrolling + " PICKINGUP: " + me.pickingup + " DELIVERING " + me.deliverying);
+        //if for some reason me.pickingup is false even tought we are still doing GoPickUp plan, we put it to true so we
+        //are sure that we are in picking up state
+
+        //console.log("MY STATE FLAG 1: " + me.state);
+        if(me.state != state[2]){
+            me.state = state[2]
+            //console.log("PICKINGUP MODIFIED INSIDE PLANNING");
+        }
+        //console.log("MY STATE FLAG 2: " + me.state);
 
         const moveBeliefset = new Beliefset();
 
-        //moveBeliefset.undeclare( 'at me_c t-'+x+'-'+y+'' );
         moveBeliefset.declare('at me t-'+Math.round(me.x)+'-'+Math.round(me.y)+'');
         moveBeliefset.declare('me me');
         moveBeliefset.declare('parcelTile t-'+x+'-'+y+'');
@@ -229,8 +256,7 @@ class GoPickUp extends Plan {
         var plan = await onlineSolver( domain, problem );
 
         if (plan == undefined){
-            //me.patrolling = false;
-            me.pickingup = false;
+            me.state = state[0];
         }
 
         //console.log( plan );     
@@ -238,32 +264,26 @@ class GoPickUp extends Plan {
                                                 ,{ name: 'move_left', executor: () => this.planMove('left').catch(err => {throw err})}
                                                 ,{ name: 'move_up', executor: () =>  this.planMove('up').catch(err => {throw err})}
                                                 ,{ name: 'move_down', executor: () =>  this.planMove('down').catch(err => {throw err})}
-                                                ,{ name: 'pickup', executor: () => (
-                                                                                                client.timer(100),
-                                                                                                //console.log("Arrived at cell"),
-                                                                                                client.pickup(),
-                                                                                                me.pickingup = false,
-                                                                                                me.carrying = true
-                                                                                                ) } );
+                                                ,{ name: 'pickup', executor: () => this.checkIfArrived(x,y).catch(err => {throw err})});
 
         pddlExecutor.exec( plan ).catch(err => {this.RedoGoPickUp(x,y)});
 
-        await client.timer(100);
         if ( this.stopped ) throw ['stopped']; // if stopped then quit
         return true;
 
     }
 
     async RedoGoPickUp(x1, y1){
-        console.log("Redo planning");
-        //this.subIntention( [ 'go_pick_up', x1, y1 ] );
+        //console.log("Redo planning");
+        me.state = state[2]
         Agent.push( [ 'go_pick_up', x1, y1 ] );
     }
 
     async planMove(direction){
 
+        console.log("MY STATE: " + me.state);
+
         if (!this.stopped){
-            await client.timer(100);
             moved = await client.move(direction);
             if (!moved){
                 this.stop();
@@ -272,6 +292,17 @@ class GoPickUp extends Plan {
         }else{
             console.log("PICKUP PLAN BLOCKED");
             throw ['stopped'];
+        }
+    }
+
+    async checkIfArrived(x,y){
+        if (Math.round(me.x) == x && Math.round(me.y) == y){
+            client.pickup();
+            me.state = state[0];
+            me.carrying = true;
+        }else{
+            this.stop();
+            if ( this.stopped ) throw ['stopped']; // if stopped then quit
         }
     }
 }
@@ -283,13 +314,14 @@ class GoDeliver extends Plan {
     }
 
     async execute ( go_deliver ) {
-        await client.timer(100);
 
-        if(me.pickingup){
+        //first check if i am picking up or not
+        if(me.state != state[3]){
             this.stop();
             if ( this.stopped ) throw ['stopped']; // if stopped then quit
             return true;
         }
+        //console.log("PATROLLING: " + me.patrolling + " PICKINGUP: " + me.pickingup + " DELIVERING " + me.deliverying);
 
         const moveBeliefset = new Beliefset();
 
@@ -346,43 +378,48 @@ class GoDeliver extends Plan {
         var plan = await onlineSolver( domain, problem );
 
         if (plan == undefined){
-            me.deliverying = false;
-            me.carrying = false;
+            me.state = state[0];
+            me.carrying = false;    // i need to put to false also me.carrying, otherwise it will try to deliver even 
+                                    // if there are no delivery tiles, resulting in doing nothing and blocking the path
+                                    // to other agents
         }
 
         //console.log( plan );
 
-        const pddlExecutor = new PddlExecutor( { name: 'move_right', executor: () => (this.planMove('right')) }
-                                            ,{ name: 'move_left', executor: () => (this.planMove('left')) }
-                                            ,{ name: 'move_up', executor: () => (this.planMove('up')) }
-                                            ,{ name: 'move_down', executor: () => (this.planMove('down')) }
+        const pddlExecutor = new PddlExecutor( { name: 'move_right', executor: () => this.planMove('right').catch(err => {throw err}) }
+                                            ,{ name: 'move_left', executor: () => this.planMove('left').catch(err => {throw err}) }
+                                            ,{ name: 'move_up', executor: () => this.planMove('up').catch(err => {throw err}) }
+                                            ,{ name: 'move_down', executor: () => this.planMove('down').catch(err => {throw err}) }
                                                 ,{ name: 'putdown', executor: () => (
-                                                                                            client.timer(100),
                                                                                             client.putdown(),
-                                                                                            me.deliverying = false,
+                                                                                            me.state = state[0],
                                                                                             me.carrying = false
                                                                                             ) } );
 
         pddlExecutor.exec( plan ).catch(err => {this.RedoGoPutdown()});
-
-        
                                                                                             
-        await client.timer(100);
         if ( this.stopped ) throw ['stopped']; // if stopped then quit
         return true;
     }
 
     async RedoGoPutdown(){
         console.log("Redo planning");
-        Agent.push( [ 'go_deliver' ] );
+        if (me.carrying_map.size > 0){
+            me.state = state[3];
+            Agent.push( [ 'go_deliver' ] );
+        }else{
+            me.state = state[0];
+            me.carrying = false;
+        }
+        return true;
     }
 
     async planMove(direction){
 
         if (!this.stopped){
-            await client.timer(100);
             moved = await client.move(direction);
-            if (!moved){
+            //console.log("RIGHT NOW I HAVE THESE PARCELS: " + me.carrying_map.size);
+            if (!moved || me.carrying_map.size == 0){
                 this.stop();
                 if ( this.stopped ) throw ['stopped']; // if stopped then quit
             }

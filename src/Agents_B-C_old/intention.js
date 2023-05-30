@@ -1,7 +1,7 @@
 import {planLibrary} from "./planning.js"
-import {parcels, me, state} from "./Agent_A.js";
+import {parcels, me} from "./Agent.js";
 
- 
+
 /**
  * Intention
  */
@@ -135,27 +135,34 @@ export class IntentionRevision {
                 }catch (error) {
                     if ( !intention.stopped )
                     console.error( 'Failed intention', ...intention.predicate, 'with error:', error )
-                    me.state = state[0];
+                    me.patrolling = false;
+                    me.pickingup = false;
+                    me.deliverying = false;
                     continue;
                 }
 
             }
             else {
 
-                //console.log("MY STATE FLAG 4: " + me.state);
-
-                if (me.state == state[0]){
+                if (!me.patrolling && !me.pickingup && !me.deliverying){
                     //if i have other parcels to pick
                     if (this.parcelsToPick.length > 0){
                         const nextAction = this.parcelsToPick.shift();
-                        me.state = state[2];
+                        me.pickingup = true;
                         this.push(nextAction);
                     }else{
+                        let parcels_carrying = me.carrying_map.size;
+                        //console.log("parcels_carrying: " + parcels_carrying);
+/*
+                        if (parcels_carrying == 0){
+                            me.carrying = false;
+                        }*/
+
                         if (me.carrying){
-                            me.state = state[3];
+                            me.deliverying = true;
                             this.push( [ "go_deliver" ] );
                         }else{
-                            me.state = state[1];
+                            me.patrolling = true;
                             this.push( [ "patrolling" ] );
                         }
                     } 

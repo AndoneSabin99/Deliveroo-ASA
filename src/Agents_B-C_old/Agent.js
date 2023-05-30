@@ -15,7 +15,7 @@ if (process.argv[2] == "1"){
     id_ask = config.id_1;
 }
 
-export const state = ['nothing', 'patrolling', 'pickingup', 'delivering'];
+
 
 //CODE FOR AGENT B and C
 
@@ -29,13 +29,15 @@ const depth_search = depth_search_daemon(client);
 export function distance( {x:x1, y:y1}, {x:x2, y:y2} ) {
     return depth_search( {x:x1, y:y1}, {x:x2, y:y2} ).length;
 }
- 
+
 /**
  * Beliefset revision function
  */
 export const me = { carrying_map: new Map() };
-me.state = state[0];
+me.patrolling = false;
+me.pickingup = false;
 me.carrying = false;
+me.deliverying = false;
 me.alone = true;
 client.onYou( ( {id, name, x, y, score} ) => {
     me.id = id
@@ -101,8 +103,10 @@ client.onParcelsSensing( async ( perceived_parcels ) => {
         
                 if (answer == true){
                     //console.log("My position " + me.x + " " + me.y);
-                    if (me.state != state[2] && me.state != state[3]){
-                        me.state = state[2];
+                    if ((me.patrolling || !me.pickingup) && !me.deliverying){
+                        me.patrolling = false;
+                        me.pickingup = true;
+                        me.deliverying = false;
                         Agent.push( predicate );
                     }else{
                         if ( !Agent.parcelsToPick.find( (p) => p.join(' ') == predicate.join(' ') ) ){
@@ -114,10 +118,13 @@ client.onParcelsSensing( async ( perceived_parcels ) => {
                 console.log("Error from ask: " + error);
             })
 
+
             if (me.alone){
                 console.log("TEAMMATE NO AVAILABLE, NEED TO DO PICKUP AND DELIVER ALONE");
-                if (me.state != state[2] && me.state != state[3]){
-                    me.state = state[2];
+                if ((me.patrolling || !me.pickingup) && !me.deliverying){
+                    me.patrolling = false;
+                    me.pickingup = true;
+                    me.deliverying = false;
                     Agent.push( predicate );
                 }else{
                     if ( !Agent.parcelsToPick.find( (p) => p.join(' ') == predicate.join(' ') ) ){
@@ -125,7 +132,14 @@ client.onParcelsSensing( async ( perceived_parcels ) => {
                     }               
                 }
             }else{
-                //console.log("MY TEAMMATE IS HERE");
+                console.log("MY TEAMMATE IS HERE");
+            }
+            //console.log(reply);
+
+            if (reply){
+                console.log("Reply is true");
+            }else{
+                console.log("Reply is false");
             }
         }
         //console.log("Parcel id " + p.id + " and parcel "+ p);
@@ -133,7 +147,7 @@ client.onParcelsSensing( async ( perceived_parcels ) => {
         if ( p.carriedBy == me.id ) {
             me.carrying_map.set( p.id, p );
         }
-    } 
+    }
     for ( const [id,p] of parcels.entries() ) {
         if ( ! perceived_parcels.find( p=>p.id==id ) ) {
             //parcels.delete( id ); 
@@ -179,8 +193,10 @@ client.onMsg( (id, name, msg, reply) => {
         //console.log(answer);
         if (!answer){
             const predicate = [ 'go_pick_up', msg.x_p, msg.y_p ];
-            if (me.state != state[2] && me.state != state[3]){
-                me.state = state[2]
+            if ((me.patrolling || !me.pickingup) && !me.deliverying){
+                me.patrolling = false;
+                me.pickingup = true;
+                me.deliverying = false;
                 Agent.push( predicate );
             }else{
                 if ( !Agent.parcelsToPick.find( (p) => p.join(' ') == predicate.join(' ') ) ){
@@ -213,5 +229,4 @@ let reply = client.ask( id_ask, {
 
 Agent.parcelsToPick = [];
 Agent.loop();
-
 

@@ -1,6 +1,6 @@
 import { onlineSolver, PddlExecutor, PddlProblem, Beliefset, PddlDomain, PddlAction } from "@unitn-asa/pddl-client";
 import {readFile} from "./utils.js";
-import {me, client, agentsSensed, map, Agent, distance, state} from "./Agent.js";
+import {me, client, agentsSensed, map, Agent, distance} from "./Agent.js";
 import {Intention} from "./intention.js";
 
 var moved = false;
@@ -61,7 +61,8 @@ class Patrolling extends Plan {
 
 
         //console.log("NEW PLAN");
-        if(me.state != state[1]){
+        //console.log("The me.picking is " + me.pickingup);
+        if(me.pickingup){
             this.stop();
             if ( this.stopped ) throw ['stopped']; // if stopped then quit
             return true;
@@ -141,7 +142,7 @@ class Patrolling extends Plan {
         var plan = await onlineSolver( domain, problem );
 
         if (plan == undefined){
-            me.state = state[0];
+            me.patrolling = false;
         }
 
         //console.log( plan );
@@ -150,14 +151,10 @@ class Patrolling extends Plan {
                                                 ,{ name: 'move_up', executor: () =>  this.planMove('up').catch(err => {throw err})}
                                                 ,{ name: 'move_down', executor: () =>  this.planMove('down').catch(err => {throw err})}
                                                 ,{ name: 'patrollingDestination', executor: () => (
-                                                                                                me.state = state[0]
+                                                                                                me.patrolling = false
                                                                                                 ) } );
 
-        pddlExecutor.exec( plan ).catch(err => {
-            if (me.state == state[1]){
-                me.state = state[0]
-            }
-        });
+        pddlExecutor.exec( plan ).catch(err => {me.patrolling = false;});
 
         if ( this.stopped ) throw ['stopped']; // if stopped then quit
 
@@ -165,8 +162,6 @@ class Patrolling extends Plan {
     }
 
     async planMove(direction){
-
-        //console.log("MY STATE FLAG 3: " + me.state);
 
         if (!this.stopped){
             moved = await client.move(direction);
@@ -186,19 +181,16 @@ class GoPickUp extends Plan {
     static isApplicableTo ( go_pick_up, x, y ) {
         return go_pick_up == 'go_pick_up';
     }
- 
+
     async execute ( go_pick_up, x, y ) {
 
         //console.log("PATROLLING: " + me.patrolling + " PICKINGUP: " + me.pickingup + " DELIVERING " + me.deliverying);
         //if for some reason me.pickingup is false even tought we are still doing GoPickUp plan, we put it to true so we
         //are sure that we are in picking up state
-
-        //console.log("MY STATE FLAG 1: " + me.state);
-        if(me.state != state[2]){
-            me.state = state[2]
+        if(!me.pickingup){
+            me.pickingup = true;
             //console.log("PICKINGUP MODIFIED INSIDE PLANNING");
         }
-        //console.log("MY STATE FLAG 2: " + me.state);
 
         const moveBeliefset = new Beliefset();
 
@@ -256,7 +248,9 @@ class GoPickUp extends Plan {
         var plan = await onlineSolver( domain, problem );
 
         if (plan == undefined){
-            me.state = state[0];
+            me.patrolling = false;
+            me.pickingup = false;
+            me.deliverying = false;
         }
 
         //console.log( plan );     
@@ -275,13 +269,13 @@ class GoPickUp extends Plan {
 
     async RedoGoPickUp(x1, y1){
         //console.log("Redo planning");
-        me.state = state[2]
+        me.patrolling = false;
+        me.pickingup = true;
+        me.deliverying = false;
         Agent.push( [ 'go_pick_up', x1, y1 ] );
     }
 
     async planMove(direction){
-
-        console.log("MY STATE: " + me.state);
 
         if (!this.stopped){
             moved = await client.move(direction);
@@ -290,7 +284,7 @@ class GoPickUp extends Plan {
                 if ( this.stopped ) throw ['stopped']; // if stopped then quit
             }
         }else{
-            console.log("PICKUP PLAN BLOCKED");
+            //console.log("PICKUP PLAN BLOCKED");
             throw ['stopped'];
         }
     }
@@ -298,7 +292,7 @@ class GoPickUp extends Plan {
     async checkIfArrived(x,y){
         if (Math.round(me.x) == x && Math.round(me.y) == y){
             client.pickup();
-            me.state = state[0];
+            me.pickingup = false;
             me.carrying = true;
         }else{
             this.stop();
@@ -316,7 +310,7 @@ class GoDeliver extends Plan {
     async execute ( go_deliver ) {
 
         //first check if i am picking up or not
-        if(me.state != state[3]){
+        if(me.pickingup){
             this.stop();
             if ( this.stopped ) throw ['stopped']; // if stopped then quit
             return true;
@@ -378,7 +372,9 @@ class GoDeliver extends Plan {
         var plan = await onlineSolver( domain, problem );
 
         if (plan == undefined){
-            me.state = state[0];
+            me.patrolling = false;
+            me.pickingup = false;
+            me.deliverying = false;
             me.carrying = false;    // i need to put to false also me.carrying, otherwise it will try to deliver even 
                                     // if there are no delivery tiles, resulting in doing nothing and blocking the path
                                     // to other agents
@@ -392,7 +388,7 @@ class GoDeliver extends Plan {
                                             ,{ name: 'move_down', executor: () => this.planMove('down').catch(err => {throw err}) }
                                                 ,{ name: 'putdown', executor: () => (
                                                                                             client.putdown(),
-                                                                                            me.state = state[0],
+                                                                                            me.deliverying = false,
                                                                                             me.carrying = false
                                                                                             ) } );
 
@@ -405,10 +401,11 @@ class GoDeliver extends Plan {
     async RedoGoPutdown(){
         console.log("Redo planning");
         if (me.carrying_map.size > 0){
-            me.state = state[3];
             Agent.push( [ 'go_deliver' ] );
         }else{
-            me.state = state[0];
+            me.patrolling = false;
+            me.pickingup = false;
+            me.deliverying = false;
             me.carrying = false;
         }
         return true;
@@ -423,6 +420,10 @@ class GoDeliver extends Plan {
                 this.stop();
                 if ( this.stopped ) throw ['stopped']; // if stopped then quit
             }
+
+
+
+
         }else{
             console.log("GO DELIVER PLAN BLOCKED");
             throw ['stopped'];

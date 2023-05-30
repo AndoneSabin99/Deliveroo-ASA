@@ -183,7 +183,7 @@ class Patrolling extends Plan {
 
 class GoPickUp extends Plan {
 
-    static isApplicableTo ( go_pick_up, x, y ) {
+    static isApplicableTo ( go_pick_up, x, y, id ) {
         return go_pick_up == 'go_pick_up';
     }
  
@@ -193,12 +193,10 @@ class GoPickUp extends Plan {
         //if for some reason me.pickingup is false even tought we are still doing GoPickUp plan, we put it to true so we
         //are sure that we are in picking up state
 
-        //console.log("MY STATE FLAG 1: " + me.state);
         if(me.state != state[2]){
             me.state = state[2]
             //console.log("PICKINGUP MODIFIED INSIDE PLANNING");
         }
-        //console.log("MY STATE FLAG 2: " + me.state);
 
         const moveBeliefset = new Beliefset();
 
@@ -281,7 +279,7 @@ class GoPickUp extends Plan {
 
     async planMove(direction){
 
-        console.log("MY STATE: " + me.state);
+        //console.log("MY STATE: " + me.state);
 
         if (!this.stopped){
             moved = await client.move(direction);
@@ -403,14 +401,18 @@ class GoDeliver extends Plan {
     }
 
     async RedoGoPutdown(){
-        console.log("Redo planning");
-        if (me.carrying_map.size > 0){
-            me.state = state[3];
-            Agent.push( [ 'go_deliver' ] );
-        }else{
-            me.state = state[0];
-            me.carrying = false;
+        
+        if (me.state != state[2]){
+            if (me.carrying_map.size > 0){
+                console.log("Redo planning");
+                me.state = state[3];
+                Agent.push( [ 'go_deliver' ] );
+            }else{
+                me.state = state[0];
+                me.carrying = false;
+            }
         }
+        
         return true;
     }
 

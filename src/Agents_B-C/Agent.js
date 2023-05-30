@@ -2,6 +2,8 @@ import { DeliverooApi } from "@unitn-asa/deliveroo-js-client";
 import {IntentionRevision} from "./intention.js";
 import depth_search_daemon from "./depth_search_daemon.js";
 import { default as config } from "../config.js";
+import {pickupParcel} from "./utils.js";
+
 
 
 let token = "";
@@ -25,6 +27,7 @@ export const client = new DeliverooApi(
     token)
 
 //distance function, with use of depth_search
+//cannot put this function in utils.js because it cannot access client before initialization
 const depth_search = depth_search_daemon(client);
 export function distance( {x:x1, y:y1}, {x:x2, y:y2} ) {
     return depth_search( {x:x1, y:y1}, {x:x2, y:y2} ).length;
@@ -45,6 +48,13 @@ client.onYou( ( {id, name, x, y, score} ) => {
     me.score = score
     //console.log("Me.alone: " + me.alone);
 } )
+
+export var MOVEMENT_DURATION
+export var PARCEL_DECADING_INTERVAL
+client.onConfig( (config) => {
+    MOVEMENT_DURATION = config.MOVEMENT_DURATION;
+    PARCEL_DECADING_INTERVAL = config.PARCEL_DECADING_INTERVAL == '1s' ? 1000 : 1000000;
+} );
 
 //create map
 export const map = {
@@ -88,27 +98,18 @@ client.onParcelsSensing( async ( perceived_parcels ) => {
         if ( ! parcels.has(p.id) && p.carriedBy == null){
             //console.log("I SENSE A NEW PARCEL AT POSITION "+p.x+" "+p.y);
             const my_distance = distance(me, {x: p.x, y: p.y});
-            const predicate = [ 'go_pick_up', p.x, p.y ];
             //console.log("My distance is " + my_distance);
             let reply = client.ask( id_ask, {
                 x_p: p.x,
                 y_p: p.y,
                 teammate_distance: my_distance,
                 p_id: p.id,
+                p_reward: p.reward,
                 parcel_to_pickup: p
             } ).then( (answer) => {
                 //console.log("Answer from ask function" + answer);                
-        
                 if (answer == true){
-                    //console.log("My position " + me.x + " " + me.y);
-                    if (me.state != state[2] && me.state != state[3]){
-                        me.state = state[2];
-                        Agent.push( predicate );
-                    }else{
-                        if ( !Agent.parcelsToPick.find( (p) => p.join(' ') == predicate.join(' ') ) ){
-                            Agent.parcelsToPick.push(predicate);
-                        }               
-                    }
+                    pickupParcel(p.x,p.y,p.id,p.reward);
                 }
             }).catch( (error) =>{
                 console.log("Error from ask: " + error);
@@ -116,14 +117,7 @@ client.onParcelsSensing( async ( perceived_parcels ) => {
 
             if (me.alone){
                 console.log("TEAMMATE NO AVAILABLE, NEED TO DO PICKUP AND DELIVER ALONE");
-                if (me.state != state[2] && me.state != state[3]){
-                    me.state = state[2];
-                    Agent.push( predicate );
-                }else{
-                    if ( !Agent.parcelsToPick.find( (p) => p.join(' ') == predicate.join(' ') ) ){
-                        Agent.parcelsToPick.push(predicate);
-                    }               
-                }
+                pickupParcel(p.x,p.y,p.id,p.reward);
             }else{
                 //console.log("MY TEAMMATE IS HERE");
             }
@@ -178,14 +172,9 @@ client.onMsg( (id, name, msg, reply) => {
 
         //console.log(answer);
         if (!answer){
-            const predicate = [ 'go_pick_up', msg.x_p, msg.y_p ];
-            if (me.state != state[2] && me.state != state[3]){
-                me.state = state[2]
-                Agent.push( predicate );
-            }else{
-                if ( !Agent.parcelsToPick.find( (p) => p.join(' ') == predicate.join(' ') ) ){
-                    Agent.parcelsToPick.push(predicate);
-                }
+            let pickedup = pickupParcel(msg.x_p, msg.y_p, msg.p_id, msg.p_reward);
+            if (!pickedup){
+                answer = true;
             }
         }
     }  

@@ -1,18 +1,25 @@
 import { DeliverooApi } from "@unitn-asa/deliveroo-js-client";
-import EventEmitter from "events";
 import {IntentionRevision} from "./intention.js";
 import depth_search_daemon from "./depth_search_daemon.js";
 import { default as config } from "../config.js";
+import {pickupParcel} from "./utils.js";
 
-
+/*
+The four states that the agent may assume during runtime. 
+'nothing': the agent does nothing. This is the intial state that the agent assumes
+'patrolling': the agent has not sensed any parcels, thus it patrolls randomly in the map
+'pickingup': the agent has sensed a parcel and goes to pick it
+'delivering': the agent goes to deliver 
+*/
 export const state = ['nothing', 'patrolling', 'pickingup', 'delivering'];
 
-//creating new client to apply script to our agent
+//creating new client to apply the script to our agent
+//values are taken from the config.js file
 export const client = new DeliverooApi(
     config.host,
     config.token_1)
 
-//distance function, with use of depth_search
+//distance function, with use of depth_search from depth_search_daemon.js file
 const depth_search = depth_search_daemon(client);
 export function distance( {x:x1, y:y1}, {x:x2, y:y2} ) {
     return depth_search( {x:x1, y:y1}, {x:x2, y:y2} ).length;
@@ -22,15 +29,24 @@ export function distance( {x:x1, y:y1}, {x:x2, y:y2} ) {
  * Beliefset revision function
  */
 export const me = { carrying_map: new Map() };
-me.state = state[0];
-me.carrying = false;
-client.onYou( ( {id, name, x, y, score} ) => {
+me.state = state[0];                                //the state of the agent, it tarts with the 'nothing' state
+me.carrying = false;                                //a flag variable that indicates if the parcel is carrying a parcel or not, used as an imediate way to indicate that now the agent is carrying parcels
+me.actual_parcel_to_pick = 'no_parcel';             //the parcel id that the agent is picking up in a certain moment
+client.onYou( ( {id, name, x, y, score} ) => {      //the onYou function, similar to the one of the Benchmark agent provided by the professor in the DeliverooAgent.js repository
     me.id = id
     me.name = name
     me.x = x
     me.y = y
     me.score = score
 } )
+
+//configuration variables
+export var MOVEMENT_DURATION
+export var PARCEL_DECADING_INTERVAL
+client.onConfig( (config) => {
+    MOVEMENT_DURATION = config.MOVEMENT_DURATION;
+    PARCEL_DECADING_INTERVAL = config.PARCEL_DECADING_INTERVAL == '1s' ? 1000 : 1000000;
+} );
 
 //create map
 export const map = {
@@ -67,38 +83,49 @@ client.onAgentsSensing( ( agents ) => {
     }
 } )
 
+
+/**
+ * Options generation and filtering function
+ */
 //parcel sensing
 export const parcels = new Map();
 client.onParcelsSensing( async ( perceived_parcels ) => {
     for (const p of perceived_parcels) {
+
+        //check if this is a new parcel and if it is not carried by anyone else
         if ( ! parcels.has(p.id) && p.carriedBy == null){
-            console.log("I SENSE A NEW PARCEL AT POSITION "+p.x+" "+p.y);
-            //parcels.set( p.id, p)
-            if (me.state != state[2] && me.state != state[3]){
-                me.state = state[2];
-                Agent.push( [ 'go_pick_up', p.x, p.y ] );
-            }else{
-                Agent.parcelsToPick.push([ 'go_pick_up', p.x, p.y ]);
-            }
+            //console.log("I SENSE A NEW PARCEL AT POSITION "+p.x+" "+p.y);
+
+            //pickup function
+            pickupParcel(p.x,p.y,p.id,p.reward);
         }
+
         parcels.set( p.id, p) 
+
+        //check if i am carrying this parcel so i can count it in me.carrying_map
         if ( p.carriedBy == me.id ) {
             me.carrying_map.set( p.id, p );
         }
     }
+
     for ( const [id,p] of parcels.entries() ) {
+        //if i don't have anymore the parcel the agent has been carrying, then we took it out from me.carrying_map
         if ( ! perceived_parcels.find( p=>p.id==id ) ) {
-            //parcels.delete( id ); 
             me.carrying_map.delete( id );
         }
     }
 } )
 
 /**
- * Start intention revision loop for both agents
+ * Start intention revision loop for the agent
  */
 export const Agent = new IntentionRevision();
 
+/*
+parcelsToPick is used as a queue for picking other parcels while in 'pickingup' state. It is necessary to use it,
+otherwise when we push options directly to the intention revision queue it will stop the old plan, thus not being
+able to pick the parcel that the agent initally planned to pick.
+*/
 Agent.parcelsToPick = [];
 Agent.loop();
 

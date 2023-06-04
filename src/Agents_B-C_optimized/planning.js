@@ -1,10 +1,13 @@
 import { onlineSolver, PddlExecutor, PddlProblem, Beliefset, PddlDomain, PddlAction } from "@unitn-asa/pddl-client";
-import {readFile} from "./utils.js";
+import {readFile, nearestDelivery} from "./utils.js";
 import {me, client, agentsSensed, map, Agent, distance, state} from "./Agent.js";
 import {Intention} from "./intention.js";
 
-var moved = false;
+//variable used to decide if the agent moved or not
+//it must be false only when the agent cannot move because it's stucked by an obstacle (i.e. by another agent blocking its path)
+var moved = true;
 
+// Plan class, similar to Benchmark
 class Plan {
 
     // This is used to stop the plan
@@ -48,7 +51,7 @@ class Plan {
 }
 
 /**
- * Plan classes and library for class C
+ * Plan classes and library
  */
 
 class Patrolling extends Plan {
@@ -59,38 +62,39 @@ class Patrolling extends Plan {
 
     async execute ( patrolling ) {
 
-
-        //console.log("NEW PLAN");
+        //if for some reason we are not in state 'patrolling' we stop the plan
         if(me.state != state[1]){
             this.stop();
             if ( this.stopped ) throw ['stopped']; // if stopped then quit
             return true;
         }
-        //console.log("PATROLLING: " + me.patrolling + " PICKINGUP: " + me.pickingup + " DELIVERING " + me.deliverying);
+
+        //create new beliefset for problem
         const moveBeliefset = new Beliefset();
 
+        //beliefset declarations
         moveBeliefset.declare('at me t-'+Math.round(me.x)+'-'+Math.round(me.y)+'');
         moveBeliefset.declare('me me');
         moveBeliefset.undeclare('arrived');
-
-        
-
+        //we need to consider all the agents that may block our path
         for (let [id, agent] of agentsSensed.entries()){
             moveBeliefset.declare('blocked t-'+agent.x+'-'+agent.y);
             //console.log(agent);
         }
 
+        //get the map as an array of tiles in order to declare the entire map for the beliefset
         let tile_list = Array.from( map.tiles.values() );
         //console.log(tile_list);
         for(let tile of tile_list){
 
-            //console.log("Distance from " + tile.x + " " + tile.y + " is " + distance(me,tile))
             moveBeliefset.declare("tile t-"+tile.x+"-"+tile.y);
 
+            //if it is a delivery tile we also declare this condition
             if(tile.delivery){
                 moveBeliefset.declare("delivery t-"+tile.x+"-"+tile.y);
             }
 
+            //for every direction, check the adjacency relation between other tiles
             let right = tile_list.find((tile_right) => tile.x == tile_right.x-1 && tile.y == tile_right.y);
             if (right){
                 moveBeliefset.declare("right t-"+tile.x+"-"+tile.y+" t-"+(tile.x+1)+"-"+tile.y);
@@ -110,23 +114,27 @@ class Patrolling extends Plan {
             if (down){
                 moveBeliefset.declare("down t-"+tile.x+"-"+tile.y+" t-"+tile.x+"-"+(tile.y-1));    
             }
-
         }
 
-
+        //Specifically for patrolling plan, we randomly choose a tile where parcels spawn
+        //but first we need the filtered array with only tiles where parcels spawn
         let parcelSpawnerTileList = Array.from( map.tiles.values() ).filter( ({parcelSpawner}) => parcelSpawner );
         //console.log(parcelSpawnerTileList);
         let reachableParcelSpawnerTileList = parcelSpawnerTileList.filter((tile) => distance(me,tile) > 0)
         //console.log(reachableParcelSpawnerTileList);
 
+        //this if condition can be true only when we are stuck and cannot move
+        //we need to assign reachableParcelSpawnerTileList the entire parcelSpawnerTileList otherwise the agent will stay stucked
         if (reachableParcelSpawnerTileList.length == 0){
             reachableParcelSpawnerTileList = parcelSpawnerTileList;
         }
 
+        //choose a random parcelSpawner tile
         let i = Math.floor( Math.random() * reachableParcelSpawnerTileList.length );
         let destinationTile = reachableParcelSpawnerTileList.at(i);
         moveBeliefset.declare("parcelSpawner t-"+destinationTile.x+"-"+destinationTile.y);
 
+        //build pddl problem
         var pddlProblem = new PddlProblem(
             'deliveroo',
             moveBeliefset.objects.join(' '),
@@ -134,12 +142,14 @@ class Patrolling extends Plan {
             'and (arrived)'
         )
 
+        //build plan
         let problem = pddlProblem.toPddlString();
-        console.log( problem );
+        //console.log( problem );
         let domain = await readFile('./domain-deliveroo.pddl' );
         //console.log( domain );
         var plan = await onlineSolver( domain, problem );
 
+        //if no plan has found, then we go back to 'nothing' state
         if (plan == undefined){
             me.state = state[0];
         }
@@ -150,10 +160,14 @@ class Patrolling extends Plan {
                                                 ,{ name: 'move_up', executor: () =>  this.planMove('up').catch(err => {throw err})}
                                                 ,{ name: 'move_down', executor: () =>  this.planMove('down').catch(err => {throw err})}
                                                 ,{ name: 'patrollingDestination', executor: () => (
+                                                                                                //once finished patrolling, go back to 'nothing' state
                                                                                                 me.state = state[0]
                                                                                                 ) } );
 
         pddlExecutor.exec( plan ).catch(err => {
+            //if i was patrolling then i change the agent's state to 'nothing' state
+            //if for some reason the state would result being 'pickingup' or 'delivering' state, 
+            //then don't change the state its state
             if (me.state == state[1]){
                 me.state = state[0]
             }
@@ -164,10 +178,10 @@ class Patrolling extends Plan {
         return true;
     }
 
+    //move function for Plan
     async planMove(direction){
 
-        //console.log("MY STATE FLAG 3: " + me.state);
-
+        //first check if the plan has been stopped, then move and if the agent is stuck, stop the plan rightaway
         if (!this.stopped){
             moved = await client.move(direction);
             if (!moved){
@@ -175,7 +189,7 @@ class Patrolling extends Plan {
                 if ( this.stopped ) throw ['stopped']; // if stopped then quit
             }
         }else{
-            console.log("PATROLLING PLAN BLOCKED");
+            //console.log("PATROLLING PLAN BLOCKED");
             throw ['stopped'];
         }
     }
@@ -189,34 +203,37 @@ class GoPickUp extends Plan {
  
     async execute ( go_pick_up, x, y, id ) {
 
-        //console.log("PATROLLING: " + me.patrolling + " PICKINGUP: " + me.pickingup + " DELIVERING " + me.deliverying);
-        //if for some reason me.pickingup is false even tought we are still doing GoPickUp plan, we put it to true so we
-        //are sure that we are in picking up state
-
+        //if for some reason the state is not 'pickingup' even tought we are still doing GoPickUp plan, 
+        //we put it to that state so we are sure that we are in picking up state
         if(me.state != state[2]){
             me.state = state[2]
-            //console.log("PICKINGUP MODIFIED INSIDE PLANNING");
         }
 
+        //create new beliefset for problem
         const moveBeliefset = new Beliefset();
 
+        //beliefset declarations
         moveBeliefset.declare('at me t-'+Math.round(me.x)+'-'+Math.round(me.y)+'');
         moveBeliefset.declare('me me');
         moveBeliefset.declare('parcelTile t-'+x+'-'+y+'');
         moveBeliefset.undeclare('carryingParcel');
-
+        //we need to consider all the agents that may block our path
         for (let [id, agent] of agentsSensed.entries()){
             moveBeliefset.declare('blocked t-'+agent.x+'-'+agent.y);
         }
 
+        //get the map as an array of tiles in order to declare the entire map for the beliefset
         let tile_list = Array.from( map.tiles.values() );
         for(let tile of tile_list){
 
             moveBeliefset.declare("tile t-"+tile.x+"-"+tile.y);
 
+            //if it is a delivery tile we also declare this condition
             if(tile.delivery){
                 moveBeliefset.declare("delivery t-"+tile.x+"-"+tile.y);
             }
+
+            //for every direction, check the adjacency relation between other tiles
             let right = tile_list.find((tile_right) => tile.x == tile_right.x-1 && tile.y == tile_right.y);
             if (right){
                 moveBeliefset.declare("right t-"+tile.x+"-"+tile.y+" t-"+(tile.x+1)+"-"+tile.y);
@@ -239,6 +256,7 @@ class GoPickUp extends Plan {
 
         }
 
+        //build pddl problem
         var pddlProblem = new PddlProblem(
             'deliveroo',
             moveBeliefset.objects.join(' '),
@@ -247,12 +265,14 @@ class GoPickUp extends Plan {
         )
 
 
+        //build plan
         let problem = pddlProblem.toPddlString();
-        console.log( problem );
+        //console.log( problem );
         let domain = await readFile('./domain-deliveroo.pddl' );
         //console.log( domain );
         var plan = await onlineSolver( domain, problem );
 
+        //if no plan has found, then we go back to 'nothing' state
         if (plan == undefined){
             me.state = state[0];
         }
@@ -262,7 +282,7 @@ class GoPickUp extends Plan {
                                                 ,{ name: 'move_left', executor: () => this.planMove('left').catch(err => {throw err})}
                                                 ,{ name: 'move_up', executor: () =>  this.planMove('up').catch(err => {throw err})}
                                                 ,{ name: 'move_down', executor: () =>  this.planMove('down').catch(err => {throw err})}
-                                                ,{ name: 'pickup', executor: () => this.checkIfArrived(x,y).catch(err => {throw err})});
+                                                ,{ name: 'pickup', executor: () => this.checkIfArrived(x,y,id).catch(err => {throw err})});
 
         pddlExecutor.exec( plan ).catch(err => {this.RedoGoPickUp(x,y,id)});
 
@@ -271,16 +291,25 @@ class GoPickUp extends Plan {
 
     }
 
-    async RedoGoPickUp(x1, y1, id){
+    //function called when the Agent has to redo the GoPickUp plan
+    async RedoGoPickUp(x, y, id){
         //console.log("Redo planning");
-        me.state = state[2]
-        Agent.push( [ 'go_pick_up', x1, y1, id ] );
+
+        //if the agent is still in state 'pickingup' and can move towards the parcel (which means that the agent is not
+        //stuck and sensed another parcel, then we postpone the old intention in order to go pick the new parcel)
+        //otherwise we just retry the plan
+        if (me.state == state[2] && moved){
+            Agent.parcelsToPick.push([ 'go_pick_up', x, y, id ]);
+        }else{
+            me.state = state[2]
+            Agent.push( [ 'go_pick_up', x, y, id ] );
+        }
     }
 
+    //move function for Plan
     async planMove(direction){
 
-        //console.log("MY STATE: " + me.state);
-
+        //first check if the plan has been stopped, then move and if the agent is stuck, stop the plan rightaway
         if (!this.stopped){
             moved = await client.move(direction);
             if (!moved){
@@ -288,19 +317,20 @@ class GoPickUp extends Plan {
                 if ( this.stopped ) throw ['stopped']; // if stopped then quit
             }
         }else{
-            console.log("PICKUP PLAN BLOCKED");
+            //console.log("PICKUP PLAN BLOCKED");
             throw ['stopped'];
         }
     }
 
-    async checkIfArrived(x,y){
+    //function used to check if the agent is really at the tile where it should be (i.e. the tile with the parcel to pick up)
+    async checkIfArrived(x,y,id){
         if (Math.round(me.x) == x && Math.round(me.y) == y){
             client.pickup();
             me.state = state[0];
             me.carrying = true;
         }else{
-            this.stop();
-            if ( this.stopped ) throw ['stopped']; // if stopped then quit
+            me.state = state[2]
+            Agent.push( [ 'go_pick_up', x, y, id ] );
         }
     }
 }
@@ -313,32 +343,39 @@ class GoDeliver extends Plan {
 
     async execute ( go_deliver ) {
 
-        //first check if i am picking up or not
+        //first check if the agent is in the correct state for GoDeliver Plan
+        //if not, then stop the plan
         if(me.state != state[3]){
             this.stop();
             if ( this.stopped ) throw ['stopped']; // if stopped then quit
             return true;
         }
-        //console.log("PATROLLING: " + me.patrolling + " PICKINGUP: " + me.pickingup + " DELIVERING " + me.deliverying);
 
+        //create new beliefset for problem
         const moveBeliefset = new Beliefset();
 
+        //beliefset declarations
         moveBeliefset.declare('at me t-'+Math.round(me.x)+'-'+Math.round(me.y)+'');
         moveBeliefset.declare('me me');
         moveBeliefset.undeclare('deliveryMade');
-
+        //we need to consider all the agents that may block our path
         for (let [id, agent] of agentsSensed.entries()){
             moveBeliefset.declare('blocked t-'+agent.x+'-'+agent.y);
         }
 
+        //get the map as an array of tiles in order to declare the entire map for the beliefset
         let tile_list = Array.from( map.tiles.values() );
         for(let tile of tile_list){
 
             moveBeliefset.declare("tile t-"+tile.x+"-"+tile.y);
 
+            //if it is a delivery tile we also declare this condition
+            //useful especially in this plan since we need to deliver the parcels
             if(tile.delivery){
                 moveBeliefset.declare("delivery t-"+tile.x+"-"+tile.y);
             }
+
+            //for every direction, check the adjacency relation between other tiles
             let right = tile_list.find((tile_right) => tile.x == tile_right.x-1 && tile.y == tile_right.y);
             if (right){
                 moveBeliefset.declare("right t-"+tile.x+"-"+tile.y+" t-"+(tile.x+1)+"-"+tile.y);
@@ -361,6 +398,7 @@ class GoDeliver extends Plan {
 
         }
 
+        //build pddl problem
         var pddlProblem = new PddlProblem(
             'deliveroo',
             moveBeliefset.objects.join(' '),
@@ -369,21 +407,21 @@ class GoDeliver extends Plan {
         )
 
 
+        //if no plan has found, then we go back to 'nothing' state
         let problem = pddlProblem.toPddlString();
-        console.log( problem );
+        //console.log( problem );
         let domain = await readFile('./domain-deliveroo.pddl' );
         //console.log( domain );
         var plan = await onlineSolver( domain, problem );
 
+        //if no plan has found, then we go back to 'nothing' state
+        //and since the agent should be in 'deliverying' state we also put me.carrying to false
+        //in the case the agent is not carrying parcels anymore
         if (plan == undefined){
             me.state = state[0];
             if (me.carrying_map.size == 0){
                 me.carrying = false;
             }
-            //await client.move(direction)
-            //me.carrying = false;    // i need to put to false also me.carrying, otherwise it will try to deliver even 
-                                    // if there are no delivery tiles, resulting in doing nothing and blocking the path
-                                    // to other agents
         }
 
         //console.log( plan );
@@ -392,11 +430,7 @@ class GoDeliver extends Plan {
                                             ,{ name: 'move_left', executor: () => this.planMove('left').catch(err => {throw err}) }
                                             ,{ name: 'move_up', executor: () => this.planMove('up').catch(err => {throw err}) }
                                             ,{ name: 'move_down', executor: () => this.planMove('down').catch(err => {throw err}) }
-                                                ,{ name: 'putdown', executor: () => (
-                                                                                            client.putdown(),
-                                                                                            me.state = state[0],
-                                                                                            me.carrying = false
-                                                                                            ) } );
+                                                ,{ name: 'putdown', executor: () => this.checkIfArrived().catch(err => {throw err}) } );
 
         pddlExecutor.exec( plan ).catch(err => {this.RedoGoPutdown()});
                                                                                             
@@ -404,39 +438,61 @@ class GoDeliver extends Plan {
         return true;
     }
 
+    //function called when the Agent has to redo the GoDeliver plan
     async RedoGoPutdown(){
-        
-        if (me.state != state[2]){
-            if (me.carrying_map.size > 0){
-                console.log("Redo planning");
-                me.state = state[3];
-                Agent.push( [ 'go_deliver' ] );
-            }else{
-                me.state = state[0];
-                me.carrying = false;
-            }
+        //console.log("Redo planning");
+
+        //we check if the agent is still carrying parcel, if yes then the agent tries again to deliver, 
+        //otherwise it goes back to 'nothing' state
+        if (me.carrying_map.size > 0){
+            me.state = state[3];
+            Agent.push( [ 'go_deliver' ] );
+        }else{
+            me.state = state[0];
+            me.carrying = false;
         }
-        
         return true;
     }
 
+    //move function for Plan
     async planMove(direction){
 
+        //first check if the plan has been stopped, then move and if the agent is stuck, stop the plan rightaway
         if (!this.stopped){
             moved = await client.move(direction);
             //console.log("RIGHT NOW I HAVE THESE PARCELS: " + me.carrying_map.size);
+
+            //for the GoDeliver plan we check also if the agent is still carrying some parcels
+            //because once all the parcels expire it does not make sense for the agent to continue its way
+            //to the delivery tile since in this case it will not deliver any parcel, thus it will stop its plan
             if (!moved || me.carrying_map.size == 0){
                 this.stop();
                 if ( this.stopped ) throw ['stopped']; // if stopped then quit
             }
         }else{
-            console.log("GO DELIVER PLAN BLOCKED");
+            //console.log("GO DELIVER PLAN BLOCKED");
             throw ['stopped'];
         }
     }
-    
+
+    //check if the agent arrived to the correct tile, in order to correctly putdown the parcels
+    async checkIfArrived(){
+        const nearestDeliveryTile = nearestDelivery(me);
+        if (Math.round(distance(me,nearestDeliveryTile)) == 0){
+            client.putdown(),
+            me.state = state[0],
+            me.carrying = false
+        }else{
+            this.stop();
+            if ( this.stopped ) throw ['stopped']; // if stopped then quit*/
+        }
+    }
+     
 }
 
+/**
+ * Plan library
+ */
 export const planLibrary = [];
 
 // plan classes are added to plan library

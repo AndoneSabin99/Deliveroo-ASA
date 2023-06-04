@@ -1,5 +1,5 @@
 import fs from 'fs';
-import {me, map, Agent, distance, state, MOVEMENT_DURATION, PARCEL_DECADING_INTERVAL} from "./Agent_A.js";
+import {me, map, Agent, distance, state, MOVEMENT_DURATION, PARCEL_DECADING_INTERVAL} from "./Agent.js";
 
 
 //function for reading the domain-deliveroo.pddl file

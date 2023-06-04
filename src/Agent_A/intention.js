@@ -1,9 +1,10 @@
 import {planLibrary} from "./planning.js"
-import {parcels, me, state} from "./Agent_A.js";
+import {parcels, me, state, distance} from "./Agent_A.js";
 
  
 /**
  * Intention
+ * similar to Benchmark agent
  */
 export class Intention {
 
@@ -120,12 +121,20 @@ export class IntentionRevision {
                 const intention = this.currentIntention = new Intention( this, predicate );
                 
                 // Is queued intention still valid? Do I still want to achieve it?
-                // TODO this hard-coded implementation is an example
                 if ( intention.predicate[0] == "go_pick_up" ) {
                     let id = intention.predicate[3]
                     let p = parcels.get(id)
                     if ( p && p.carriedBy ) {
                         console.log( 'Skipping intention because no more valid', intention.predicate );
+                        me.state = state[0];
+                        continue;
+                    }
+
+                    //check if I am picking the correct parcel, this check is important because otherwise the agent may
+                    //try to pick up two parcel at the same time, thus staying stuck between two GoPickUp plans
+                    if (me.actual_parcel_to_pick != id){
+                        this.parcelsToPick.push(predicate);
+                        console.log("ALREADY PICKING UP A PARCEL. PUT THE OTHER ONE IN THE PARCELS TO PICK QUEUE");
                         continue;
                     }
                 }
@@ -134,6 +143,7 @@ export class IntentionRevision {
                     await intention.achieve()
                 }catch (error) {
                     if ( !intention.stopped )
+                    //if the agent failes its intention, it goes back to state 'nothing'
                     console.error( 'Failed intention', ...intention.predicate, 'with error:', error )
                     me.state = state[0];
                     continue;
@@ -142,15 +152,27 @@ export class IntentionRevision {
             }
             else {
 
-                //console.log("MY STATE FLAG 4: " + me.state);
-
+                //if the loop reaches this point, it means that it has no other intentions to achieve.
+                //It is important to check its state because we want to assign a new intention to our agent only once
+                //it is in state 'nothing' which means only once it has finished all the previous intentions.
                 if (me.state == state[0]){
-                    //if i have other parcels to pick
+
+                    //check if i have other parcels to pick before proceeding to deliver
                     if (this.parcelsToPick.length > 0){
+
+                        //check if i have more than one parcels left to pick, so i can order them by their distance
+                        //in an ascending order
+                        if (this.parcelsToPick.length > 1){
+                            this.parcelsToPick.sort( (o1, o2) => distance(me, {x: o1[1], y: o1[2]}) - distance(me, {x: o2[1], y: o2[2]}) )
+                        }
+
+                        //proceed to pickup the next parcel of the parcelsToPick queue
                         const nextAction = this.parcelsToPick.shift();
                         me.state = state[2];
+                        me.actual_parcel_to_pick = nextAction[3];
                         this.push(nextAction);
                     }else{
+                        //check if i am carrying a parcel or not, based on this we decide if the agent will patroll or will deliver
                         if (me.carrying){
                             me.state = state[3];
                             this.push( [ "go_deliver" ] );
@@ -168,8 +190,6 @@ export class IntentionRevision {
         }
     }
 
-    // async push ( predicate ) { }
-
     log ( ...args ) {
         console.log( ...args )
     }
@@ -181,10 +201,6 @@ export class IntentionRevision {
         // // Check if already queued
         if ( this.intention_queue.find( (p) => p.join(' ') == predicate.join(' ') ) )
              return;
-        
-        // // Reschedule current
-        //if ( this.currentIntention )
-            //this.intention_queue.unshift( this.currentIntention.predicate );
 
         // Prioritize pushed one
         this.intention_queue.unshift( predicate );

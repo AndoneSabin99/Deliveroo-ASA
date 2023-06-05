@@ -16,4 +16,4 @@ or
 
 `node Agent.js 1`
 
-if you want to run the script for the team of agents. Note that you need also to pass a number parameter which indicates if you want to run the first agent (you have to pass the number 1 as parameter) or the second one (you have to pass the number 2. Both of them can also run independently and they start to cooperate when the second agent starts its loop (since it communicates with the other agent about its loop initialization).
+if you want to run the script for the team of agents. Note that you need also to pass a number parameter which indicates if you want to run the first agent (you have to pass the number 1 as parameter) or the second one (you have to pass the number 2). Both of them can also run independently and they start to cooperate when the second agent starts its loop (since it communicates with the other agent about its loop initialization).

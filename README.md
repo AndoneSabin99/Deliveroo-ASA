@@ -8,7 +8,7 @@ To run this code first make sure to download and run the server code provided du
 
 Then, once the server runs, enter inside the game environment and make sure to keep track of the token and id that are generated since they are used in the config.js file so the agent can use the script. You can put two tokens and two ids, one for each agent. The configuration file also wants an host, which can be either localhost:8080 or [your IP adress]:8080 or also https://deliveroojs.onrender.com/ if you want to play on a cloud server.
 
-Next you have to run the script. To do so, go to the folder inside the repository that contains the program file and run it with command:
+Next you have to run the script. To do so, go to the folder inside the repository that contains the program file and run this command in terminal:
 `node Agent_A.js`
 or
 `node Agent.js 1`

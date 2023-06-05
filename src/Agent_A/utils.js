@@ -1,5 +1,5 @@
 import fs from 'fs';
-import {me, map, Agent, distance, state, MOVEMENT_DURATION, PARCEL_DECADING_INTERVAL} from "./Agent_A.js";
+import {me, map, Agent, distance, state, MOVEMENT_DURATION, PARCEL_DECADING_INTERVAL, agentsSensed} from "./Agent_A.js";
 
 
 //function for reading the domain-deliveroo.pddl file
@@ -12,12 +12,91 @@ export function readFile ( path ) {
     })
 }
 
+var t = 0;
+
+//logger function, used for testing and validation purposes
+export function appendFile(){
+
+    var content = "t-"+t+"\n";
+    content += "Beliefset = {\n";
+    content += "    me(" + me.name + "), \n";
+    content += "    In(" + me.x + ", " + me.y + "), \n";
+    content += "    score(" + me.score + "), \n";
+    content += "    state(" + me.state + "), \n";
+    content += "    actual_parcel_to_pick(" + me.actual_parcel_to_pick + "), \n";
+    content += "    carry(";
+    
+    var carrying_map_size = me.carrying_map.size;
+    for (const value of me.carrying_map.values()) {
+        content += `${value.id}`     
+        if (carrying_map_size > 1){
+            content += ", ";
+            carrying_map_size -= 1;
+        }
+    }
+
+    content += ")\n";
+    content += "    other_agents(";
+    var agentsSensed_size = agentsSensed.size;
+    for (let [id, agent] of agentsSensed.entries()){
+        content += `[${agent.name}, ${agent.x}, ${agent.y}]`;
+        if (agentsSensed_size > 1){
+            content += ", ";
+            agentsSensed_size -= 1;
+        }
+    }
+    content += ")\n";
+    content += "}\n";
+    content += "Intention = {\n"
+    content += "    In(" + Agent.currentIntention.predicate + ")\n"
+    content += "}\n";
+
+    content += "Plan = {\n    ";
+    if(me.plan != undefined){
+        var plan_size = me.plan.slice(1).length;
+        for (const step of me.plan.slice(1).values()) {
+            content += `[${step.action}, ${step.args}]`;
+            if (plan_size > 1){
+                content += ", ";
+                plan_size -= 1;
+            }
+        }
+    }
+    
+    content += "\n}\n";
+
+    content += "Do = {\n";
+
+    if(me.plan != undefined){
+        me.plan_index +=1; 
+        if (me.plan[me.plan_index] != undefined)
+        content += `    [${me.plan[me.plan_index].action}, ${me.plan[me.plan_index].args}]`;   
+    }
+    content += "\n}\n\n";
+
+
+
+
+
+    t += 1;
+
+    return new Promise((res, rej) => {
+        const path = "./test.txt"
+        fs.appendFile(path, content, (err) => {
+            if (err) rej(err)
+            else res(content)
+        })
+    })
+}
+
+
 //function for getting the nearest delivery tile from {x,y} coordinates
 export function nearestDelivery({x, y}) {
     return Array.from( map.tiles.values() ).filter( ({delivery}) => delivery ).sort( (a,b) => distance(a,{x, y})-distance(b,{x, y}) )[0]
 }
 
 //function to decide if the agent should pick up a parcel or not
+//it is used as a filtering function
 export function isWorthPickup(x, y, reward){
     //getting nearest delivery tile
     let deliveryTile = nearestDelivery({x: x, y: y});
@@ -44,9 +123,9 @@ export function isWorthPickup(x, y, reward){
     We need to differentiate the formula based on its state because if the agent is not in 'pickingup' state it is assumed 
     that the parcelsToPick queue is empty so it can be excluded from the formula, also because if the agent is near a 
     delivery tile while deliverying and is sensing other parcels, then it will not go to these
-    parcels once it has finisdhed with the delivery because of the carrying_map which for sure contains some parcels,
+    parcels once it has finished with the delivery because of the carrying_map which for sure contains some parcels,
     thus making its size big, and most probably resulting in a negative score. 
-    For this reason it is necessary to consider the carrying_map only when in state 'pickingup' (i.e. when the 
+    For this reason it is necessary to consider the parcelsToPick only when in state 'pickingup' (i.e. when the 
     agent is picking other parcels).
 
     NB: since the agent movement is actually slower than MOVEMENT_DURATION value, we add a latency value which for simplicity will consider it being 500

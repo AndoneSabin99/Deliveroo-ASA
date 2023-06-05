@@ -111,6 +111,7 @@ export class IntentionRevision {
     }
 
     async loop ( ) {
+        
         while ( true ) {
             // Consumes intention_queue if not empty
             if ( this.intention_queue.length > 0 ) {
@@ -160,8 +161,8 @@ export class IntentionRevision {
                     //check if i have other parcels to pick before proceeding to deliver
                     if (this.parcelsToPick.length > 0){
 
-                        //check if i have more than one parcels left to pick, so i can order them by their distance
-                        //in an ascending order
+                        //check if i have more than one parcels left to pick, so i can sort options by the distance
+                        //of the parcels left to be picked up
                         if (this.parcelsToPick.length > 1){
                             this.parcelsToPick.sort( (o1, o2) => distance(me, {x: o1[1], y: o1[2]}) - distance(me, {x: o2[1], y: o2[2]}) )
                         }

@@ -97,7 +97,6 @@ export const parcels = new Map();
 client.onParcelsSensing( async ( perceived_parcels ) => {
     for (const p of perceived_parcels) {
         if ( ! parcels.has(p.id) && p.carriedBy == null){
-        //if (distance(me,{x: p.x, y: p.y}) > 1 || (me.x == p.x && me.y == ))
             //console.log("I SENSE A NEW PARCEL AT POSITION "+p.x+" "+p.y);
             const my_distance = distance(me, {x: p.x, y: p.y});
             //console.log("My distance is " + my_distance);

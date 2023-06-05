@@ -2,7 +2,7 @@ import { DeliverooApi } from "@unitn-asa/deliveroo-js-client";
 import {IntentionRevision} from "./intention.js";
 import depth_search_daemon from "./depth_search_daemon.js";
 import { default as config } from "../config.js";
-import {pickupParcel} from "./utils.js";
+import {appendFile, pickupParcel} from "./utils.js";
 
 /*
 The four states that the agent may assume during runtime. 
@@ -38,14 +38,21 @@ client.onYou( ( {id, name, x, y, score} ) => {      //the onYou function, simila
     me.x = x
     me.y = y
     me.score = score
+    if (me.x % 1 == 0 && me.y % 1 == 0){
+        appendFile();
+    }
 } )
+me.plan = undefined;    //used for logger function
+me.plan_index = 0;      //used for logger function
 
 //configuration variables
-export var MOVEMENT_DURATION
-export var PARCEL_DECADING_INTERVAL
+export var MOVEMENT_DURATION;
+export var PARCEL_DECADING_INTERVAL;
+export var MAP;
 client.onConfig( (config) => {
     MOVEMENT_DURATION = config.MOVEMENT_DURATION;
     PARCEL_DECADING_INTERVAL = config.PARCEL_DECADING_INTERVAL == '1s' ? 1000 : 1000000;
+    MAP = config.MAP_FILE;
 } );
 
 //create map
@@ -85,7 +92,7 @@ client.onAgentsSensing( ( agents ) => {
 
 
 /**
- * Options generation and filtering function
+ * Options generation
  */
 //parcel sensing
 export const parcels = new Map();
@@ -127,6 +134,7 @@ otherwise when we push options directly to the intention revision queue it will 
 able to pick the parcel that the agent initally planned to pick.
 */
 Agent.parcelsToPick = [];
+
 Agent.loop();
 
 

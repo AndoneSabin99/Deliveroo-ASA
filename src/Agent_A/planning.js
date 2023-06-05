@@ -152,9 +152,12 @@ class Patrolling extends Plan {
         //if no plan has found, then we go back to 'nothing' state
         if (plan == undefined){
             me.state = state[0];
+        }else{
+            me.plan = plan;
+            me.plan_index = 0; 
         }
 
-        //console.log( plan );
+        console.log( plan );
         const pddlExecutor = new PddlExecutor( { name: 'move_right', executor: () => this.planMove('right').catch(err => {throw err})}
                                                 ,{ name: 'move_left', executor: () => this.planMove('left').catch(err => {throw err})}
                                                 ,{ name: 'move_up', executor: () =>  this.planMove('up').catch(err => {throw err})}
@@ -275,6 +278,10 @@ class GoPickUp extends Plan {
         //if no plan has found, then we go back to 'nothing' state
         if (plan == undefined){
             me.state = state[0];
+            me.actual_parcel_to_pick = 'no_parcel'; 
+        }else{
+            me.plan = plan;
+            me.plan_index = 0; 
         }
 
         //console.log( plan );     
@@ -327,6 +334,7 @@ class GoPickUp extends Plan {
         if (Math.round(me.x) == x && Math.round(me.y) == y){
             client.pickup();
             me.state = state[0];
+            me.actual_parcel_to_pick = 'no_parcel'; 
             me.carrying = true;
         }else{
             me.state = state[2]
@@ -422,6 +430,9 @@ class GoDeliver extends Plan {
             if (me.carrying_map.size == 0){
                 me.carrying = false;
             }
+        }else{
+            me.plan = plan;
+            me.plan_index = 0; 
         }
 
         //console.log( plan );

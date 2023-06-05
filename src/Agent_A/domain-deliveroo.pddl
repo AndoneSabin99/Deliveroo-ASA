@@ -12,10 +12,6 @@
                (parcelTile ?t)
                (deliveryMade)
                (blocked ?t)
-               (moved_right)
-               (moved_left)
-               (moved_up)
-               (moved_down)
                (parcelSpawner ?t)
                (arrived)
                )
@@ -26,7 +22,6 @@
         :effect (and
             (at ?me ?to)
 			(not (at ?me ?from))
-			(moved_right)
         )
     )
     
@@ -36,7 +31,6 @@
         :effect (and
             (at ?me ?to)
 			(not (at ?me ?from))
-			(moved_left)
         )
     )
 
@@ -46,7 +40,6 @@
         :effect (and
             (at ?me ?to)
 			(not (at ?me ?from))
-			(moved_up)
         )
     )
 
@@ -56,7 +49,6 @@
         :effect (and
             (at ?me ?to)
 			(not (at ?me ?from))
-			(moved_down)
         )
     )
   

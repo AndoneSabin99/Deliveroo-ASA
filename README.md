@@ -7,21 +7,37 @@ Inside the src folder it is possible to find the following content:
 
 `
 src
+
 │
+
 └───Agent_A
+
 │   │
+
 │   └─── source code for Agent A
+
 │   └─── test folder containing some log file used as validation for Agent A
-│       
+
+│   
+
 └───Agent_B-C
+
 │   │
+
 │   └─── source code for the two Agents B and C
-│   └─── test folder containing some log file used to do experiments for the two agents, useful for optimizing the game strategy    
+
+│   └─── test folder containing some log file used to do experiments for the two agents, useful for optimizing the game strategy
+
 │
+
 └───Agent_B-C
+
     │
+    
     └─── optimized version of the source code for the two Agents B and C
+    
     └─── test folder containing some log file used as validation for the optimized version
+    
 `
 
 ## Run

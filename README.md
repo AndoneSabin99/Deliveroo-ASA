@@ -5,7 +5,7 @@ Project for the "Autonomous Software Agents" course at Unitn. This repository co
 ## Repository structure
 Inside the src folder it is possible to find the following content:
 
-`
+```
 
 src
 
@@ -39,7 +39,7 @@ src
     
     └─── test folder containing some log file used as validation for the optimized version
     
-`
+```
 
 ## Run
 

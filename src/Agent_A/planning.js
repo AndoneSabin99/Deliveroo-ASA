@@ -157,7 +157,7 @@ class Patrolling extends Plan {
             me.plan_index = 0; 
         }
 
-        console.log( plan );
+        //console.log( plan );
         const pddlExecutor = new PddlExecutor( { name: 'move_right', executor: () => this.planMove('right').catch(err => {throw err})}
                                                 ,{ name: 'move_left', executor: () => this.planMove('left').catch(err => {throw err})}
                                                 ,{ name: 'move_up', executor: () =>  this.planMove('up').catch(err => {throw err})}

@@ -1,0 +1,2500 @@
+t-0
+Beliefset = {
+    me(test), 
+    In(3, 4), 
+    score(0), 
+    state(patrolling), 
+    actual_parcel_to_pick(no_parcel), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(patrolling)
+}
+Plan = {
+    
+}
+Do = {
+
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-1
+Beliefset = {
+    me(test), 
+    In(3, 5), 
+    score(0), 
+    state(patrolling), 
+    actual_parcel_to_pick(no_parcel), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(patrolling)
+}
+Plan = {
+    [move_up, me,t-3-5,t-3-6], [move_up, me,t-3-6,t-3-7], [move_up, me,t-3-7,t-3-8], [move_up, me,t-3-8,t-3-9], [move_up, me,t-3-9,t-3-10], [move_right, me,t-3-10,t-4-10], [move_right, me,t-4-10,t-5-10], [move_right, me,t-5-10,t-6-10], [move_right, me,t-6-10,t-7-10], [patrollingdestination, t-7-10,me]
+}
+Do = {
+    [move_up, me,t-3-5,t-3-6]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-2
+Beliefset = {
+    me(test), 
+    In(3, 6), 
+    score(0), 
+    state(patrolling), 
+    actual_parcel_to_pick(no_parcel), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(patrolling)
+}
+Plan = {
+    [move_up, me,t-3-5,t-3-6], [move_up, me,t-3-6,t-3-7], [move_up, me,t-3-7,t-3-8], [move_up, me,t-3-8,t-3-9], [move_up, me,t-3-9,t-3-10], [move_right, me,t-3-10,t-4-10], [move_right, me,t-4-10,t-5-10], [move_right, me,t-5-10,t-6-10], [move_right, me,t-6-10,t-7-10], [patrollingdestination, t-7-10,me]
+}
+Do = {
+    [move_up, me,t-3-6,t-3-7]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-3
+Beliefset = {
+    me(test), 
+    In(3, 7), 
+    score(0), 
+    state(patrolling), 
+    actual_parcel_to_pick(no_parcel), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(patrolling)
+}
+Plan = {
+    [move_up, me,t-3-5,t-3-6], [move_up, me,t-3-6,t-3-7], [move_up, me,t-3-7,t-3-8], [move_up, me,t-3-8,t-3-9], [move_up, me,t-3-9,t-3-10], [move_right, me,t-3-10,t-4-10], [move_right, me,t-4-10,t-5-10], [move_right, me,t-5-10,t-6-10], [move_right, me,t-6-10,t-7-10], [patrollingdestination, t-7-10,me]
+}
+Do = {
+    [move_up, me,t-3-7,t-3-8]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-4
+Beliefset = {
+    me(test), 
+    In(3, 8), 
+    score(0), 
+    state(patrolling), 
+    actual_parcel_to_pick(no_parcel), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(patrolling)
+}
+Plan = {
+    [move_up, me,t-3-5,t-3-6], [move_up, me,t-3-6,t-3-7], [move_up, me,t-3-7,t-3-8], [move_up, me,t-3-8,t-3-9], [move_up, me,t-3-9,t-3-10], [move_right, me,t-3-10,t-4-10], [move_right, me,t-4-10,t-5-10], [move_right, me,t-5-10,t-6-10], [move_right, me,t-6-10,t-7-10], [patrollingdestination, t-7-10,me]
+}
+Do = {
+    [move_up, me,t-3-8,t-3-9]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-5
+Beliefset = {
+    me(test), 
+    In(3, 9), 
+    score(0), 
+    state(patrolling), 
+    actual_parcel_to_pick(no_parcel), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(patrolling)
+}
+Plan = {
+    [move_up, me,t-3-5,t-3-6], [move_up, me,t-3-6,t-3-7], [move_up, me,t-3-7,t-3-8], [move_up, me,t-3-8,t-3-9], [move_up, me,t-3-9,t-3-10], [move_right, me,t-3-10,t-4-10], [move_right, me,t-4-10,t-5-10], [move_right, me,t-5-10,t-6-10], [move_right, me,t-6-10,t-7-10], [patrollingdestination, t-7-10,me]
+}
+Do = {
+    [move_up, me,t-3-9,t-3-10]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-6
+Beliefset = {
+    me(test), 
+    In(3, 10), 
+    score(0), 
+    state(pickingup), 
+    actual_parcel_to_pick(p5), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,4,13,p5)
+}
+Plan = {
+    [move_up, me,t-3-5,t-3-6], [move_up, me,t-3-6,t-3-7], [move_up, me,t-3-7,t-3-8], [move_up, me,t-3-8,t-3-9], [move_up, me,t-3-9,t-3-10], [move_right, me,t-3-10,t-4-10], [move_right, me,t-4-10,t-5-10], [move_right, me,t-5-10,t-6-10], [move_right, me,t-6-10,t-7-10], [patrollingdestination, t-7-10,me]
+}
+Do = {
+    [move_right, me,t-3-10,t-4-10]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-7
+Beliefset = {
+    me(test), 
+    In(3, 11), 
+    score(0), 
+    state(pickingup), 
+    actual_parcel_to_pick(p5), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,4,13,p5)
+}
+Plan = {
+    [move_up, me,t-3-11,t-3-12], [move_up, me,t-3-12,t-3-13], [move_right, me,t-3-13,t-4-13], [pickup, t-4-13,me]
+}
+Do = {
+    [move_up, me,t-3-11,t-3-12]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-8
+Beliefset = {
+    me(test), 
+    In(3, 12), 
+    score(0), 
+    state(pickingup), 
+    actual_parcel_to_pick(p5), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,4,13,p5)
+}
+Plan = {
+    [move_up, me,t-3-11,t-3-12], [move_up, me,t-3-12,t-3-13], [move_right, me,t-3-13,t-4-13], [pickup, t-4-13,me]
+}
+Do = {
+    [move_up, me,t-3-12,t-3-13]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-9
+Beliefset = {
+    me(test), 
+    In(3, 13), 
+    score(0), 
+    state(pickingup), 
+    actual_parcel_to_pick(p5), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,4,13,p5)
+}
+Plan = {
+    [move_up, me,t-3-11,t-3-12], [move_up, me,t-3-12,t-3-13], [move_right, me,t-3-13,t-4-13], [pickup, t-4-13,me]
+}
+Do = {
+    [move_right, me,t-3-13,t-4-13]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-10
+Beliefset = {
+    me(test), 
+    In(4, 13), 
+    score(0), 
+    state(pickingup), 
+    actual_parcel_to_pick(p7), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,4,13,p5)
+}
+Plan = {
+    [move_up, me,t-3-11,t-3-12], [move_up, me,t-3-12,t-3-13], [move_right, me,t-3-13,t-4-13], [pickup, t-4-13,me]
+}
+Do = {
+    [pickup, t-4-13,me]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-11
+Beliefset = {
+    me(test), 
+    In(4, 12), 
+    score(0), 
+    state(pickingup), 
+    actual_parcel_to_pick(p7), 
+    carry(p5)
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,1,9,p7)
+}
+Plan = {
+    [move_left, me,t-4-12,t-3-12], [move_left, me,t-3-12,t-2-12], [move_left, me,t-2-12,t-1-12], [move_down, me,t-1-12,t-1-11], [move_down, me,t-1-11,t-1-10], [move_down, me,t-1-10,t-1-9], [pickup, t-1-9,me]
+}
+Do = {
+    [move_left, me,t-4-12,t-3-12]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-12
+Beliefset = {
+    me(test), 
+    In(3, 12), 
+    score(0), 
+    state(pickingup), 
+    actual_parcel_to_pick(p7), 
+    carry(p5)
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,1,9,p7)
+}
+Plan = {
+    [move_left, me,t-4-12,t-3-12], [move_left, me,t-3-12,t-2-12], [move_left, me,t-2-12,t-1-12], [move_down, me,t-1-12,t-1-11], [move_down, me,t-1-11,t-1-10], [move_down, me,t-1-10,t-1-9], [pickup, t-1-9,me]
+}
+Do = {
+    [move_left, me,t-3-12,t-2-12]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-13
+Beliefset = {
+    me(test), 
+    In(2, 12), 
+    score(0), 
+    state(pickingup), 
+    actual_parcel_to_pick(p7), 
+    carry(p5)
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,1,9,p7)
+}
+Plan = {
+    [move_left, me,t-4-12,t-3-12], [move_left, me,t-3-12,t-2-12], [move_left, me,t-2-12,t-1-12], [move_down, me,t-1-12,t-1-11], [move_down, me,t-1-11,t-1-10], [move_down, me,t-1-10,t-1-9], [pickup, t-1-9,me]
+}
+Do = {
+    [move_left, me,t-2-12,t-1-12]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-14
+Beliefset = {
+    me(test), 
+    In(1, 12), 
+    score(0), 
+    state(pickingup), 
+    actual_parcel_to_pick(p7), 
+    carry(p5)
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,1,9,p7)
+}
+Plan = {
+    [move_left, me,t-4-12,t-3-12], [move_left, me,t-3-12,t-2-12], [move_left, me,t-2-12,t-1-12], [move_down, me,t-1-12,t-1-11], [move_down, me,t-1-11,t-1-10], [move_down, me,t-1-10,t-1-9], [pickup, t-1-9,me]
+}
+Do = {
+    [move_down, me,t-1-12,t-1-11]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-15
+Beliefset = {
+    me(test), 
+    In(1, 11), 
+    score(0), 
+    state(pickingup), 
+    actual_parcel_to_pick(p7), 
+    carry(p5)
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,1,9,p7)
+}
+Plan = {
+    [move_left, me,t-4-12,t-3-12], [move_left, me,t-3-12,t-2-12], [move_left, me,t-2-12,t-1-12], [move_down, me,t-1-12,t-1-11], [move_down, me,t-1-11,t-1-10], [move_down, me,t-1-10,t-1-9], [pickup, t-1-9,me]
+}
+Do = {
+    [move_down, me,t-1-11,t-1-10]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-16
+Beliefset = {
+    me(test), 
+    In(1, 10), 
+    score(0), 
+    state(pickingup), 
+    actual_parcel_to_pick(p7), 
+    carry(p5)
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,1,9,p7)
+}
+Plan = {
+    [move_left, me,t-4-12,t-3-12], [move_left, me,t-3-12,t-2-12], [move_left, me,t-2-12,t-1-12], [move_down, me,t-1-12,t-1-11], [move_down, me,t-1-11,t-1-10], [move_down, me,t-1-10,t-1-9], [pickup, t-1-9,me]
+}
+Do = {
+    [move_down, me,t-1-10,t-1-9]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-17
+Beliefset = {
+    me(test), 
+    In(1, 9), 
+    score(0), 
+    state(delivering), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p5)
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,1,9,p7)
+}
+Plan = {
+    [move_left, me,t-4-12,t-3-12], [move_left, me,t-3-12,t-2-12], [move_left, me,t-2-12,t-1-12], [move_down, me,t-1-12,t-1-11], [move_down, me,t-1-11,t-1-10], [move_down, me,t-1-10,t-1-9], [pickup, t-1-9,me]
+}
+Do = {
+    [pickup, t-1-9,me]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-18
+Beliefset = {
+    me(test), 
+    In(1, 10), 
+    score(0), 
+    state(delivering), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p5, p7)
+    other_agents()
+}
+Intention = {
+    In(go_deliver)
+}
+Plan = {
+    [move_up, me,t-1-10,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+    [move_up, me,t-1-10,t-1-11]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-19
+Beliefset = {
+    me(test), 
+    In(1, 11), 
+    score(0), 
+    state(delivering), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p5, p7)
+    other_agents()
+}
+Intention = {
+    In(go_deliver)
+}
+Plan = {
+    [move_up, me,t-1-10,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+    [move_left, me,t-1-11,t-0-11]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-20
+Beliefset = {
+    me(test), 
+    In(0, 11), 
+    score(0), 
+    state(patrolling), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p5, p7)
+    other_agents()
+}
+Intention = {
+    In(go_deliver)
+}
+Plan = {
+    [move_up, me,t-1-10,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+    [putdown, t-0-11,me]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-21
+Beliefset = {
+    me(test), 
+    In(0, 11), 
+    score(47), 
+    state(patrolling), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p5, p7)
+    other_agents()
+}
+Intention = {
+    In(patrolling)
+}
+Plan = {
+    [move_up, me,t-1-10,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-22
+Beliefset = {
+    me(test), 
+    In(1, 11), 
+    score(47), 
+    state(patrolling), 
+    actual_parcel_to_pick(no_parcel), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(patrolling)
+}
+Plan = {
+    [move_right, me,t-1-11,t-2-11], [move_right, me,t-2-11,t-3-11], [move_right, me,t-3-11,t-4-11], [move_right, me,t-4-11,t-5-11], [move_right, me,t-5-11,t-6-11], [move_right, me,t-6-11,t-7-11], [move_right, me,t-7-11,t-8-11], [move_right, me,t-8-11,t-9-11], [move_down, me,t-9-11,t-9-10], [patrollingdestination, t-9-10,me]
+}
+Do = {
+    [move_right, me,t-1-11,t-2-11]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-23
+Beliefset = {
+    me(test), 
+    In(2, 11), 
+    score(47), 
+    state(patrolling), 
+    actual_parcel_to_pick(no_parcel), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(patrolling)
+}
+Plan = {
+    [move_right, me,t-1-11,t-2-11], [move_right, me,t-2-11,t-3-11], [move_right, me,t-3-11,t-4-11], [move_right, me,t-4-11,t-5-11], [move_right, me,t-5-11,t-6-11], [move_right, me,t-6-11,t-7-11], [move_right, me,t-7-11,t-8-11], [move_right, me,t-8-11,t-9-11], [move_down, me,t-9-11,t-9-10], [patrollingdestination, t-9-10,me]
+}
+Do = {
+    [move_right, me,t-2-11,t-3-11]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-24
+Beliefset = {
+    me(test), 
+    In(3, 11), 
+    score(47), 
+    state(patrolling), 
+    actual_parcel_to_pick(no_parcel), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(patrolling)
+}
+Plan = {
+    [move_right, me,t-1-11,t-2-11], [move_right, me,t-2-11,t-3-11], [move_right, me,t-3-11,t-4-11], [move_right, me,t-4-11,t-5-11], [move_right, me,t-5-11,t-6-11], [move_right, me,t-6-11,t-7-11], [move_right, me,t-7-11,t-8-11], [move_right, me,t-8-11,t-9-11], [move_down, me,t-9-11,t-9-10], [patrollingdestination, t-9-10,me]
+}
+Do = {
+    [move_right, me,t-3-11,t-4-11]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-25
+Beliefset = {
+    me(test), 
+    In(4, 11), 
+    score(47), 
+    state(pickingup), 
+    actual_parcel_to_pick(p16), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,4,10,p16)
+}
+Plan = {
+    [move_right, me,t-1-11,t-2-11], [move_right, me,t-2-11,t-3-11], [move_right, me,t-3-11,t-4-11], [move_right, me,t-4-11,t-5-11], [move_right, me,t-5-11,t-6-11], [move_right, me,t-6-11,t-7-11], [move_right, me,t-7-11,t-8-11], [move_right, me,t-8-11,t-9-11], [move_down, me,t-9-11,t-9-10], [patrollingdestination, t-9-10,me]
+}
+Do = {
+    [move_right, me,t-4-11,t-5-11]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-26
+Beliefset = {
+    me(test), 
+    In(4, 10), 
+    score(47), 
+    state(pickingup), 
+    actual_parcel_to_pick(p11), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,4,10,p16)
+}
+Plan = {
+    [pickup, t-4-10,me]
+}
+Do = {
+    [pickup, t-4-10,me]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-27
+Beliefset = {
+    me(test), 
+    In(5, 10), 
+    score(47), 
+    state(pickingup), 
+    actual_parcel_to_pick(p11), 
+    carry(p16)
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,8,10,p11)
+}
+Plan = {
+    [move_right, me,t-5-10,t-6-10], [move_right, me,t-6-10,t-7-10], [move_right, me,t-7-10,t-8-10], [pickup, t-8-10,me]
+}
+Do = {
+    [move_right, me,t-5-10,t-6-10]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-28
+Beliefset = {
+    me(test), 
+    In(6, 10), 
+    score(47), 
+    state(pickingup), 
+    actual_parcel_to_pick(p11), 
+    carry(p16)
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,8,10,p11)
+}
+Plan = {
+    [move_right, me,t-5-10,t-6-10], [move_right, me,t-6-10,t-7-10], [move_right, me,t-7-10,t-8-10], [pickup, t-8-10,me]
+}
+Do = {
+    [move_right, me,t-6-10,t-7-10]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-29
+Beliefset = {
+    me(test), 
+    In(7, 10), 
+    score(47), 
+    state(pickingup), 
+    actual_parcel_to_pick(p11), 
+    carry(p16)
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,8,10,p11)
+}
+Plan = {
+    [move_right, me,t-5-10,t-6-10], [move_right, me,t-6-10,t-7-10], [move_right, me,t-7-10,t-8-10], [pickup, t-8-10,me]
+}
+Do = {
+    [move_right, me,t-7-10,t-8-10]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-30
+Beliefset = {
+    me(test), 
+    In(8, 10), 
+    score(47), 
+    state(delivering), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p16)
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,8,10,p11)
+}
+Plan = {
+    [move_right, me,t-5-10,t-6-10], [move_right, me,t-6-10,t-7-10], [move_right, me,t-7-10,t-8-10], [pickup, t-8-10,me]
+}
+Do = {
+    [pickup, t-8-10,me]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-31
+Beliefset = {
+    me(test), 
+    In(8, 11), 
+    score(47), 
+    state(delivering), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p16, p11)
+    other_agents()
+}
+Intention = {
+    In(go_deliver)
+}
+Plan = {
+    [move_left, me,t-8-11,t-7-11], [move_left, me,t-7-11,t-6-11], [move_left, me,t-6-11,t-5-11], [move_left, me,t-5-11,t-4-11], [move_left, me,t-4-11,t-3-11], [move_left, me,t-3-11,t-2-11], [move_left, me,t-2-11,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+    [move_left, me,t-8-11,t-7-11]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-32
+Beliefset = {
+    me(test), 
+    In(7, 11), 
+    score(47), 
+    state(delivering), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p16, p11)
+    other_agents()
+}
+Intention = {
+    In(go_deliver)
+}
+Plan = {
+    [move_left, me,t-8-11,t-7-11], [move_left, me,t-7-11,t-6-11], [move_left, me,t-6-11,t-5-11], [move_left, me,t-5-11,t-4-11], [move_left, me,t-4-11,t-3-11], [move_left, me,t-3-11,t-2-11], [move_left, me,t-2-11,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+    [move_left, me,t-7-11,t-6-11]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-33
+Beliefset = {
+    me(test), 
+    In(6, 11), 
+    score(47), 
+    state(delivering), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p16, p11)
+    other_agents()
+}
+Intention = {
+    In(go_deliver)
+}
+Plan = {
+    [move_left, me,t-8-11,t-7-11], [move_left, me,t-7-11,t-6-11], [move_left, me,t-6-11,t-5-11], [move_left, me,t-5-11,t-4-11], [move_left, me,t-4-11,t-3-11], [move_left, me,t-3-11,t-2-11], [move_left, me,t-2-11,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+    [move_left, me,t-6-11,t-5-11]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-34
+Beliefset = {
+    me(test), 
+    In(5, 11), 
+    score(47), 
+    state(delivering), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p16, p11)
+    other_agents()
+}
+Intention = {
+    In(go_deliver)
+}
+Plan = {
+    [move_left, me,t-8-11,t-7-11], [move_left, me,t-7-11,t-6-11], [move_left, me,t-6-11,t-5-11], [move_left, me,t-5-11,t-4-11], [move_left, me,t-4-11,t-3-11], [move_left, me,t-3-11,t-2-11], [move_left, me,t-2-11,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+    [move_left, me,t-5-11,t-4-11]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-35
+Beliefset = {
+    me(test), 
+    In(4, 11), 
+    score(47), 
+    state(delivering), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p16, p11)
+    other_agents()
+}
+Intention = {
+    In(go_deliver)
+}
+Plan = {
+    [move_left, me,t-8-11,t-7-11], [move_left, me,t-7-11,t-6-11], [move_left, me,t-6-11,t-5-11], [move_left, me,t-5-11,t-4-11], [move_left, me,t-4-11,t-3-11], [move_left, me,t-3-11,t-2-11], [move_left, me,t-2-11,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+    [move_left, me,t-4-11,t-3-11]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-36
+Beliefset = {
+    me(test), 
+    In(3, 11), 
+    score(47), 
+    state(delivering), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p16, p11)
+    other_agents()
+}
+Intention = {
+    In(go_deliver)
+}
+Plan = {
+    [move_left, me,t-8-11,t-7-11], [move_left, me,t-7-11,t-6-11], [move_left, me,t-6-11,t-5-11], [move_left, me,t-5-11,t-4-11], [move_left, me,t-4-11,t-3-11], [move_left, me,t-3-11,t-2-11], [move_left, me,t-2-11,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+    [move_left, me,t-3-11,t-2-11]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-37
+Beliefset = {
+    me(test), 
+    In(2, 11), 
+    score(47), 
+    state(delivering), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p16, p11)
+    other_agents()
+}
+Intention = {
+    In(go_deliver)
+}
+Plan = {
+    [move_left, me,t-8-11,t-7-11], [move_left, me,t-7-11,t-6-11], [move_left, me,t-6-11,t-5-11], [move_left, me,t-5-11,t-4-11], [move_left, me,t-4-11,t-3-11], [move_left, me,t-3-11,t-2-11], [move_left, me,t-2-11,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+    [move_left, me,t-2-11,t-1-11]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-38
+Beliefset = {
+    me(test), 
+    In(1, 11), 
+    score(47), 
+    state(delivering), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p16, p11)
+    other_agents()
+}
+Intention = {
+    In(go_deliver)
+}
+Plan = {
+    [move_left, me,t-8-11,t-7-11], [move_left, me,t-7-11,t-6-11], [move_left, me,t-6-11,t-5-11], [move_left, me,t-5-11,t-4-11], [move_left, me,t-4-11,t-3-11], [move_left, me,t-3-11,t-2-11], [move_left, me,t-2-11,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+    [move_left, me,t-1-11,t-0-11]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-39
+Beliefset = {
+    me(test), 
+    In(0, 11), 
+    score(47), 
+    state(pickingup), 
+    actual_parcel_to_pick(p22), 
+    carry(p16, p11)
+    other_agents()
+}
+Intention = {
+    In(go_deliver)
+}
+Plan = {
+    [move_left, me,t-8-11,t-7-11], [move_left, me,t-7-11,t-6-11], [move_left, me,t-6-11,t-5-11], [move_left, me,t-5-11,t-4-11], [move_left, me,t-4-11,t-3-11], [move_left, me,t-3-11,t-2-11], [move_left, me,t-2-11,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+    [putdown, t-0-11,me]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-40
+Beliefset = {
+    me(test), 
+    In(0, 11), 
+    score(84), 
+    state(pickingup), 
+    actual_parcel_to_pick(p22), 
+    carry(p16, p11)
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,2,13,p22)
+}
+Plan = {
+    [move_left, me,t-8-11,t-7-11], [move_left, me,t-7-11,t-6-11], [move_left, me,t-6-11,t-5-11], [move_left, me,t-5-11,t-4-11], [move_left, me,t-4-11,t-3-11], [move_left, me,t-3-11,t-2-11], [move_left, me,t-2-11,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-41
+Beliefset = {
+    me(test), 
+    In(1, 11), 
+    score(84), 
+    state(pickingup), 
+    actual_parcel_to_pick(p22), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,2,13,p22)
+}
+Plan = {
+    [move_right, me,t-1-11,t-2-11], [move_up, me,t-2-11,t-2-12], [move_up, me,t-2-12,t-2-13], [pickup, t-2-13,me]
+}
+Do = {
+    [move_right, me,t-1-11,t-2-11]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-42
+Beliefset = {
+    me(test), 
+    In(2, 11), 
+    score(84), 
+    state(pickingup), 
+    actual_parcel_to_pick(p22), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,2,13,p22)
+}
+Plan = {
+    [move_right, me,t-1-11,t-2-11], [move_up, me,t-2-11,t-2-12], [move_up, me,t-2-12,t-2-13], [pickup, t-2-13,me]
+}
+Do = {
+    [move_up, me,t-2-11,t-2-12]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-43
+Beliefset = {
+    me(test), 
+    In(2, 12), 
+    score(84), 
+    state(pickingup), 
+    actual_parcel_to_pick(p22), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,2,13,p22)
+}
+Plan = {
+    [move_right, me,t-1-11,t-2-11], [move_up, me,t-2-11,t-2-12], [move_up, me,t-2-12,t-2-13], [pickup, t-2-13,me]
+}
+Do = {
+    [move_up, me,t-2-12,t-2-13]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-44
+Beliefset = {
+    me(test), 
+    In(2, 13), 
+    score(84), 
+    state(delivering), 
+    actual_parcel_to_pick(no_parcel), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,2,13,p22)
+}
+Plan = {
+    [move_right, me,t-1-11,t-2-11], [move_up, me,t-2-11,t-2-12], [move_up, me,t-2-12,t-2-13], [pickup, t-2-13,me]
+}
+Do = {
+    [pickup, t-2-13,me]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-45
+Beliefset = {
+    me(test), 
+    In(2, 12), 
+    score(84), 
+    state(delivering), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p22)
+    other_agents()
+}
+Intention = {
+    In(go_deliver)
+}
+Plan = {
+    [move_left, me,t-2-12,t-1-12], [move_down, me,t-1-12,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+    [move_left, me,t-2-12,t-1-12]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-46
+Beliefset = {
+    me(test), 
+    In(1, 12), 
+    score(84), 
+    state(delivering), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p22)
+    other_agents()
+}
+Intention = {
+    In(go_deliver)
+}
+Plan = {
+    [move_left, me,t-2-12,t-1-12], [move_down, me,t-1-12,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+    [move_down, me,t-1-12,t-1-11]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-47
+Beliefset = {
+    me(test), 
+    In(1, 11), 
+    score(84), 
+    state(delivering), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p22)
+    other_agents()
+}
+Intention = {
+    In(go_deliver)
+}
+Plan = {
+    [move_left, me,t-2-12,t-1-12], [move_down, me,t-1-12,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+    [move_left, me,t-1-11,t-0-11]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-48
+Beliefset = {
+    me(test), 
+    In(0, 11), 
+    score(84), 
+    state(patrolling), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p22)
+    other_agents()
+}
+Intention = {
+    In(go_deliver)
+}
+Plan = {
+    [move_left, me,t-2-12,t-1-12], [move_down, me,t-1-12,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+    [putdown, t-0-11,me]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-49
+Beliefset = {
+    me(test), 
+    In(0, 11), 
+    score(111), 
+    state(patrolling), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p22)
+    other_agents()
+}
+Intention = {
+    In(patrolling)
+}
+Plan = {
+    [move_left, me,t-2-12,t-1-12], [move_down, me,t-1-12,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-50
+Beliefset = {
+    me(test), 
+    In(1, 11), 
+    score(111), 
+    state(patrolling), 
+    actual_parcel_to_pick(no_parcel), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(patrolling)
+}
+Plan = {
+    [move_right, me,t-1-11,t-2-11], [move_right, me,t-2-11,t-3-11], [move_right, me,t-3-11,t-4-11], [patrollingdestination, t-4-11,me]
+}
+Do = {
+    [move_right, me,t-1-11,t-2-11]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-51
+Beliefset = {
+    me(test), 
+    In(2, 11), 
+    score(111), 
+    state(patrolling), 
+    actual_parcel_to_pick(no_parcel), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(patrolling)
+}
+Plan = {
+    [move_right, me,t-1-11,t-2-11], [move_right, me,t-2-11,t-3-11], [move_right, me,t-3-11,t-4-11], [patrollingdestination, t-4-11,me]
+}
+Do = {
+    [move_right, me,t-2-11,t-3-11]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-52
+Beliefset = {
+    me(test), 
+    In(3, 11), 
+    score(111), 
+    state(patrolling), 
+    actual_parcel_to_pick(no_parcel), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(patrolling)
+}
+Plan = {
+    [move_right, me,t-1-11,t-2-11], [move_right, me,t-2-11,t-3-11], [move_right, me,t-3-11,t-4-11], [patrollingdestination, t-4-11,me]
+}
+Do = {
+    [move_right, me,t-3-11,t-4-11]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-53
+Beliefset = {
+    me(test), 
+    In(4, 11), 
+    score(111), 
+    state(nothing), 
+    actual_parcel_to_pick(p27), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,5,14,p27)
+}
+Plan = {
+    [move_right, me,t-1-11,t-2-11], [move_right, me,t-2-11,t-3-11], [move_right, me,t-3-11,t-4-11], [patrollingdestination, t-4-11,me]
+}
+Do = {
+    [patrollingdestination, t-4-11,me]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-54
+Beliefset = {
+    me(test), 
+    In(4, 12), 
+    score(111), 
+    state(patrolling), 
+    actual_parcel_to_pick(p27), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(patrolling)
+}
+Plan = {
+    [move_up, me,t-4-12,t-4-13], [move_up, me,t-4-13,t-4-14], [move_right, me,t-4-14,t-5-14], [pickup, t-5-14,me]
+}
+Do = {
+    [move_up, me,t-4-12,t-4-13]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-55
+Beliefset = {
+    me(test), 
+    In(4, 13), 
+    score(111), 
+    state(pickingup), 
+    actual_parcel_to_pick(p27), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,5,14,p27)
+}
+Plan = {
+    [move_up, me,t-4-13,t-4-14], [move_right, me,t-4-14,t-5-14], [pickup, t-5-14,me]
+}
+Do = {
+    [move_up, me,t-4-13,t-4-14]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-56
+Beliefset = {
+    me(test), 
+    In(4, 14), 
+    score(111), 
+    state(pickingup), 
+    actual_parcel_to_pick(p27), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,5,14,p27)
+}
+Plan = {
+    [move_up, me,t-4-13,t-4-14], [move_right, me,t-4-14,t-5-14], [pickup, t-5-14,me]
+}
+Do = {
+    [move_right, me,t-4-14,t-5-14]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-57
+Beliefset = {
+    me(test), 
+    In(5, 14), 
+    score(111), 
+    state(pickingup), 
+    actual_parcel_to_pick(p34), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,5,14,p27)
+}
+Plan = {
+    [move_up, me,t-4-13,t-4-14], [move_right, me,t-4-14,t-5-14], [pickup, t-5-14,me]
+}
+Do = {
+    [pickup, t-5-14,me]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-58
+Beliefset = {
+    me(test), 
+    In(5, 15), 
+    score(111), 
+    state(pickingup), 
+    actual_parcel_to_pick(p34), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,3,16,p34)
+}
+Plan = {
+    [move_up, me,t-5-15,t-5-16], [move_left, me,t-5-16,t-4-16], [move_left, me,t-4-16,t-3-16], [pickup, t-3-16,me]
+}
+Do = {
+    [move_up, me,t-5-15,t-5-16]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-59
+Beliefset = {
+    me(test), 
+    In(5, 16), 
+    score(111), 
+    state(pickingup), 
+    actual_parcel_to_pick(p34), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,3,16,p34)
+}
+Plan = {
+    [move_up, me,t-5-15,t-5-16], [move_left, me,t-5-16,t-4-16], [move_left, me,t-4-16,t-3-16], [pickup, t-3-16,me]
+}
+Do = {
+    [move_left, me,t-5-16,t-4-16]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-60
+Beliefset = {
+    me(test), 
+    In(4, 16), 
+    score(111), 
+    state(pickingup), 
+    actual_parcel_to_pick(p34), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,3,16,p34)
+}
+Plan = {
+    [move_up, me,t-5-15,t-5-16], [move_left, me,t-5-16,t-4-16], [move_left, me,t-4-16,t-3-16], [pickup, t-3-16,me]
+}
+Do = {
+    [move_left, me,t-4-16,t-3-16]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-61
+Beliefset = {
+    me(test), 
+    In(3, 16), 
+    score(111), 
+    state(delivering), 
+    actual_parcel_to_pick(no_parcel), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,3,16,p34)
+}
+Plan = {
+    [move_up, me,t-5-15,t-5-16], [move_left, me,t-5-16,t-4-16], [move_left, me,t-4-16,t-3-16], [pickup, t-3-16,me]
+}
+Do = {
+    [pickup, t-3-16,me]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-62
+Beliefset = {
+    me(test), 
+    In(3, 15), 
+    score(111), 
+    state(delivering), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p34)
+    other_agents()
+}
+Intention = {
+    In(go_deliver)
+}
+Plan = {
+    [move_left, me,t-3-15,t-2-15], [move_left, me,t-2-15,t-1-15], [move_down, me,t-1-15,t-1-14], [move_down, me,t-1-14,t-1-13], [move_down, me,t-1-13,t-1-12], [move_down, me,t-1-12,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+    [move_left, me,t-3-15,t-2-15]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-63
+Beliefset = {
+    me(test), 
+    In(2, 15), 
+    score(111), 
+    state(delivering), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p34)
+    other_agents()
+}
+Intention = {
+    In(go_deliver)
+}
+Plan = {
+    [move_left, me,t-3-15,t-2-15], [move_left, me,t-2-15,t-1-15], [move_down, me,t-1-15,t-1-14], [move_down, me,t-1-14,t-1-13], [move_down, me,t-1-13,t-1-12], [move_down, me,t-1-12,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+    [move_left, me,t-2-15,t-1-15]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-64
+Beliefset = {
+    me(test), 
+    In(1, 15), 
+    score(111), 
+    state(delivering), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p34)
+    other_agents()
+}
+Intention = {
+    In(go_deliver)
+}
+Plan = {
+    [move_left, me,t-3-15,t-2-15], [move_left, me,t-2-15,t-1-15], [move_down, me,t-1-15,t-1-14], [move_down, me,t-1-14,t-1-13], [move_down, me,t-1-13,t-1-12], [move_down, me,t-1-12,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+    [move_down, me,t-1-15,t-1-14]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-65
+Beliefset = {
+    me(test), 
+    In(1, 14), 
+    score(111), 
+    state(delivering), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p34)
+    other_agents()
+}
+Intention = {
+    In(go_deliver)
+}
+Plan = {
+    [move_left, me,t-3-15,t-2-15], [move_left, me,t-2-15,t-1-15], [move_down, me,t-1-15,t-1-14], [move_down, me,t-1-14,t-1-13], [move_down, me,t-1-13,t-1-12], [move_down, me,t-1-12,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+    [move_down, me,t-1-14,t-1-13]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-66
+Beliefset = {
+    me(test), 
+    In(1, 13), 
+    score(111), 
+    state(delivering), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p34)
+    other_agents()
+}
+Intention = {
+    In(go_deliver)
+}
+Plan = {
+    [move_left, me,t-3-15,t-2-15], [move_left, me,t-2-15,t-1-15], [move_down, me,t-1-15,t-1-14], [move_down, me,t-1-14,t-1-13], [move_down, me,t-1-13,t-1-12], [move_down, me,t-1-12,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+    [move_down, me,t-1-13,t-1-12]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-67
+Beliefset = {
+    me(test), 
+    In(1, 12), 
+    score(111), 
+    state(delivering), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p34)
+    other_agents()
+}
+Intention = {
+    In(go_deliver)
+}
+Plan = {
+    [move_left, me,t-3-15,t-2-15], [move_left, me,t-2-15,t-1-15], [move_down, me,t-1-15,t-1-14], [move_down, me,t-1-14,t-1-13], [move_down, me,t-1-13,t-1-12], [move_down, me,t-1-12,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+    [move_down, me,t-1-12,t-1-11]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-68
+Beliefset = {
+    me(test), 
+    In(1, 11), 
+    score(111), 
+    state(delivering), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p34)
+    other_agents()
+}
+Intention = {
+    In(go_deliver)
+}
+Plan = {
+    [move_left, me,t-3-15,t-2-15], [move_left, me,t-2-15,t-1-15], [move_down, me,t-1-15,t-1-14], [move_down, me,t-1-14,t-1-13], [move_down, me,t-1-13,t-1-12], [move_down, me,t-1-12,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+    [move_left, me,t-1-11,t-0-11]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-69
+Beliefset = {
+    me(test), 
+    In(0, 11), 
+    score(111), 
+    state(patrolling), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p34)
+    other_agents()
+}
+Intention = {
+    In(go_deliver)
+}
+Plan = {
+    [move_left, me,t-3-15,t-2-15], [move_left, me,t-2-15,t-1-15], [move_down, me,t-1-15,t-1-14], [move_down, me,t-1-14,t-1-13], [move_down, me,t-1-13,t-1-12], [move_down, me,t-1-12,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+    [putdown, t-0-11,me]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-70
+Beliefset = {
+    me(test), 
+    In(0, 11), 
+    score(132), 
+    state(patrolling), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p34)
+    other_agents()
+}
+Intention = {
+    In(patrolling)
+}
+Plan = {
+    [move_left, me,t-3-15,t-2-15], [move_left, me,t-2-15,t-1-15], [move_down, me,t-1-15,t-1-14], [move_down, me,t-1-14,t-1-13], [move_down, me,t-1-13,t-1-12], [move_down, me,t-1-12,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-71
+Beliefset = {
+    me(test), 
+    In(1, 11), 
+    score(132), 
+    state(pickingup), 
+    actual_parcel_to_pick(p44), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,1,9,p44)
+}
+Plan = {
+    [move_down, me,t-1-11,t-1-10], [move_down, me,t-1-10,t-1-9], [pickup, t-1-9,me]
+}
+Do = {
+    [move_down, me,t-1-11,t-1-10]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-72
+Beliefset = {
+    me(test), 
+    In(1, 10), 
+    score(132), 
+    state(pickingup), 
+    actual_parcel_to_pick(p44), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,1,9,p44)
+}
+Plan = {
+    [move_down, me,t-1-11,t-1-10], [move_down, me,t-1-10,t-1-9], [pickup, t-1-9,me]
+}
+Do = {
+    [move_down, me,t-1-10,t-1-9]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-73
+Beliefset = {
+    me(test), 
+    In(1, 9), 
+    score(132), 
+    state(delivering), 
+    actual_parcel_to_pick(no_parcel), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,1,9,p44)
+}
+Plan = {
+    [move_down, me,t-1-11,t-1-10], [move_down, me,t-1-10,t-1-9], [pickup, t-1-9,me]
+}
+Do = {
+    [pickup, t-1-9,me]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-74
+Beliefset = {
+    me(test), 
+    In(1, 10), 
+    score(132), 
+    state(delivering), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p44)
+    other_agents()
+}
+Intention = {
+    In(go_deliver)
+}
+Plan = {
+    [move_up, me,t-1-10,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+    [move_up, me,t-1-10,t-1-11]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-75
+Beliefset = {
+    me(test), 
+    In(1, 11), 
+    score(132), 
+    state(delivering), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p44)
+    other_agents()
+}
+Intention = {
+    In(go_deliver)
+}
+Plan = {
+    [move_up, me,t-1-10,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+    [move_left, me,t-1-11,t-0-11]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-76
+Beliefset = {
+    me(test), 
+    In(0, 11), 
+    score(132), 
+    state(patrolling), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p44)
+    other_agents()
+}
+Intention = {
+    In(go_deliver)
+}
+Plan = {
+    [move_up, me,t-1-10,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+    [putdown, t-0-11,me]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-77
+Beliefset = {
+    me(test), 
+    In(0, 11), 
+    score(150), 
+    state(patrolling), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p44)
+    other_agents()
+}
+Intention = {
+    In(patrolling)
+}
+Plan = {
+    [move_up, me,t-1-10,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-78
+Beliefset = {
+    me(test), 
+    In(1, 11), 
+    score(150), 
+    state(patrolling), 
+    actual_parcel_to_pick(no_parcel), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(patrolling)
+}
+Plan = {
+    [move_right, me,t-1-11,t-2-11], [move_right, me,t-2-11,t-3-11], [move_right, me,t-3-11,t-4-11], [move_right, me,t-4-11,t-5-11], [move_right, me,t-5-11,t-6-11], [move_right, me,t-6-11,t-7-11], [move_right, me,t-7-11,t-8-11], [move_right, me,t-8-11,t-9-11], [move_right, me,t-9-11,t-10-11], [move_right, me,t-10-11,t-11-11], [move_right, me,t-11-11,t-12-11], [move_up, me,t-12-11,t-12-12], [move_up, me,t-12-12,t-12-13], [move_up, me,t-12-13,t-12-14], [move_up, me,t-12-14,t-12-15], [move_up, me,t-12-15,t-12-16], [move_up, me,t-12-16,t-12-17], [patrollingdestination, t-12-17,me]
+}
+Do = {
+    [move_right, me,t-1-11,t-2-11]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-79
+Beliefset = {
+    me(test), 
+    In(2, 11), 
+    score(150), 
+    state(patrolling), 
+    actual_parcel_to_pick(no_parcel), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(patrolling)
+}
+Plan = {
+    [move_right, me,t-1-11,t-2-11], [move_right, me,t-2-11,t-3-11], [move_right, me,t-3-11,t-4-11], [move_right, me,t-4-11,t-5-11], [move_right, me,t-5-11,t-6-11], [move_right, me,t-6-11,t-7-11], [move_right, me,t-7-11,t-8-11], [move_right, me,t-8-11,t-9-11], [move_right, me,t-9-11,t-10-11], [move_right, me,t-10-11,t-11-11], [move_right, me,t-11-11,t-12-11], [move_up, me,t-12-11,t-12-12], [move_up, me,t-12-12,t-12-13], [move_up, me,t-12-13,t-12-14], [move_up, me,t-12-14,t-12-15], [move_up, me,t-12-15,t-12-16], [move_up, me,t-12-16,t-12-17], [patrollingdestination, t-12-17,me]
+}
+Do = {
+    [move_right, me,t-2-11,t-3-11]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-80
+Beliefset = {
+    me(test), 
+    In(3, 11), 
+    score(150), 
+    state(patrolling), 
+    actual_parcel_to_pick(no_parcel), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(patrolling)
+}
+Plan = {
+    [move_right, me,t-1-11,t-2-11], [move_right, me,t-2-11,t-3-11], [move_right, me,t-3-11,t-4-11], [move_right, me,t-4-11,t-5-11], [move_right, me,t-5-11,t-6-11], [move_right, me,t-6-11,t-7-11], [move_right, me,t-7-11,t-8-11], [move_right, me,t-8-11,t-9-11], [move_right, me,t-9-11,t-10-11], [move_right, me,t-10-11,t-11-11], [move_right, me,t-11-11,t-12-11], [move_up, me,t-12-11,t-12-12], [move_up, me,t-12-12,t-12-13], [move_up, me,t-12-13,t-12-14], [move_up, me,t-12-14,t-12-15], [move_up, me,t-12-15,t-12-16], [move_up, me,t-12-16,t-12-17], [patrollingdestination, t-12-17,me]
+}
+Do = {
+    [move_right, me,t-3-11,t-4-11]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-81
+Beliefset = {
+    me(test), 
+    In(4, 11), 
+    score(150), 
+    state(patrolling), 
+    actual_parcel_to_pick(no_parcel), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(patrolling)
+}
+Plan = {
+    [move_right, me,t-1-11,t-2-11], [move_right, me,t-2-11,t-3-11], [move_right, me,t-3-11,t-4-11], [move_right, me,t-4-11,t-5-11], [move_right, me,t-5-11,t-6-11], [move_right, me,t-6-11,t-7-11], [move_right, me,t-7-11,t-8-11], [move_right, me,t-8-11,t-9-11], [move_right, me,t-9-11,t-10-11], [move_right, me,t-10-11,t-11-11], [move_right, me,t-11-11,t-12-11], [move_up, me,t-12-11,t-12-12], [move_up, me,t-12-12,t-12-13], [move_up, me,t-12-13,t-12-14], [move_up, me,t-12-14,t-12-15], [move_up, me,t-12-15,t-12-16], [move_up, me,t-12-16,t-12-17], [patrollingdestination, t-12-17,me]
+}
+Do = {
+    [move_right, me,t-4-11,t-5-11]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-82
+Beliefset = {
+    me(test), 
+    In(5, 11), 
+    score(150), 
+    state(pickingup), 
+    actual_parcel_to_pick(p48), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,6,8,p48)
+}
+Plan = {
+    [move_right, me,t-1-11,t-2-11], [move_right, me,t-2-11,t-3-11], [move_right, me,t-3-11,t-4-11], [move_right, me,t-4-11,t-5-11], [move_right, me,t-5-11,t-6-11], [move_right, me,t-6-11,t-7-11], [move_right, me,t-7-11,t-8-11], [move_right, me,t-8-11,t-9-11], [move_right, me,t-9-11,t-10-11], [move_right, me,t-10-11,t-11-11], [move_right, me,t-11-11,t-12-11], [move_up, me,t-12-11,t-12-12], [move_up, me,t-12-12,t-12-13], [move_up, me,t-12-13,t-12-14], [move_up, me,t-12-14,t-12-15], [move_up, me,t-12-15,t-12-16], [move_up, me,t-12-16,t-12-17], [patrollingdestination, t-12-17,me]
+}
+Do = {
+    [move_right, me,t-5-11,t-6-11]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-83
+Beliefset = {
+    me(test), 
+    In(5, 10), 
+    score(150), 
+    state(pickingup), 
+    actual_parcel_to_pick(p48), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,6,8,p48)
+}
+Plan = {
+    [move_right, me,t-5-10,t-6-10], [move_down, me,t-6-10,t-6-9], [move_down, me,t-6-9,t-6-8], [pickup, t-6-8,me]
+}
+Do = {
+    [move_right, me,t-5-10,t-6-10]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-84
+Beliefset = {
+    me(test), 
+    In(6, 10), 
+    score(150), 
+    state(pickingup), 
+    actual_parcel_to_pick(p48), 
+    carry()
+    other_agents([a1, 6, 14])
+}
+Intention = {
+    In(go_pick_up,6,8,p48)
+}
+Plan = {
+    [move_right, me,t-5-10,t-6-10], [move_down, me,t-6-10,t-6-9], [move_down, me,t-6-9,t-6-8], [pickup, t-6-8,me]
+}
+Do = {
+    [move_down, me,t-6-10,t-6-9]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-85
+Beliefset = {
+    me(test), 
+    In(6, 9), 
+    score(150), 
+    state(pickingup), 
+    actual_parcel_to_pick(p48), 
+    carry()
+    other_agents([a1, 6, 14])
+}
+Intention = {
+    In(go_pick_up,6,8,p48)
+}
+Plan = {
+    [move_right, me,t-5-10,t-6-10], [move_down, me,t-6-10,t-6-9], [move_down, me,t-6-9,t-6-8], [pickup, t-6-8,me]
+}
+Do = {
+    [move_down, me,t-6-9,t-6-8]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-86
+Beliefset = {
+    me(test), 
+    In(6, 8), 
+    score(150), 
+    state(delivering), 
+    actual_parcel_to_pick(no_parcel), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,6,8,p48)
+}
+Plan = {
+    [move_right, me,t-5-10,t-6-10], [move_down, me,t-6-10,t-6-9], [move_down, me,t-6-9,t-6-8], [pickup, t-6-8,me]
+}
+Do = {
+    [pickup, t-6-8,me]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-87
+Beliefset = {
+    me(test), 
+    In(6, 9), 
+    score(150), 
+    state(delivering), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p48)
+    other_agents()
+}
+Intention = {
+    In(go_deliver)
+}
+Plan = {
+    [move_up, me,t-6-9,t-6-10], [move_up, me,t-6-10,t-6-11], [move_left, me,t-6-11,t-5-11], [move_left, me,t-5-11,t-4-11], [move_left, me,t-4-11,t-3-11], [move_left, me,t-3-11,t-2-11], [move_left, me,t-2-11,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+    [move_up, me,t-6-9,t-6-10]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-88
+Beliefset = {
+    me(test), 
+    In(6, 10), 
+    score(150), 
+    state(delivering), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p48)
+    other_agents()
+}
+Intention = {
+    In(go_deliver)
+}
+Plan = {
+    [move_up, me,t-6-9,t-6-10], [move_up, me,t-6-10,t-6-11], [move_left, me,t-6-11,t-5-11], [move_left, me,t-5-11,t-4-11], [move_left, me,t-4-11,t-3-11], [move_left, me,t-3-11,t-2-11], [move_left, me,t-2-11,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+    [move_up, me,t-6-10,t-6-11]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-89
+Beliefset = {
+    me(test), 
+    In(6, 11), 
+    score(150), 
+    state(delivering), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p48)
+    other_agents()
+}
+Intention = {
+    In(go_deliver)
+}
+Plan = {
+    [move_up, me,t-6-9,t-6-10], [move_up, me,t-6-10,t-6-11], [move_left, me,t-6-11,t-5-11], [move_left, me,t-5-11,t-4-11], [move_left, me,t-4-11,t-3-11], [move_left, me,t-3-11,t-2-11], [move_left, me,t-2-11,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+    [move_left, me,t-6-11,t-5-11]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-90
+Beliefset = {
+    me(test), 
+    In(5, 11), 
+    score(150), 
+    state(delivering), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p48)
+    other_agents()
+}
+Intention = {
+    In(go_deliver)
+}
+Plan = {
+    [move_up, me,t-6-9,t-6-10], [move_up, me,t-6-10,t-6-11], [move_left, me,t-6-11,t-5-11], [move_left, me,t-5-11,t-4-11], [move_left, me,t-4-11,t-3-11], [move_left, me,t-3-11,t-2-11], [move_left, me,t-2-11,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+    [move_left, me,t-5-11,t-4-11]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-91
+Beliefset = {
+    me(test), 
+    In(4, 11), 
+    score(150), 
+    state(delivering), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p48)
+    other_agents()
+}
+Intention = {
+    In(go_deliver)
+}
+Plan = {
+    [move_up, me,t-6-9,t-6-10], [move_up, me,t-6-10,t-6-11], [move_left, me,t-6-11,t-5-11], [move_left, me,t-5-11,t-4-11], [move_left, me,t-4-11,t-3-11], [move_left, me,t-3-11,t-2-11], [move_left, me,t-2-11,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+    [move_left, me,t-4-11,t-3-11]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-92
+Beliefset = {
+    me(test), 
+    In(3, 11), 
+    score(150), 
+    state(delivering), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p48)
+    other_agents()
+}
+Intention = {
+    In(go_deliver)
+}
+Plan = {
+    [move_up, me,t-6-9,t-6-10], [move_up, me,t-6-10,t-6-11], [move_left, me,t-6-11,t-5-11], [move_left, me,t-5-11,t-4-11], [move_left, me,t-4-11,t-3-11], [move_left, me,t-3-11,t-2-11], [move_left, me,t-2-11,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+    [move_left, me,t-3-11,t-2-11]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-93
+Beliefset = {
+    me(test), 
+    In(2, 11), 
+    score(150), 
+    state(delivering), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p48)
+    other_agents()
+}
+Intention = {
+    In(go_deliver)
+}
+Plan = {
+    [move_up, me,t-6-9,t-6-10], [move_up, me,t-6-10,t-6-11], [move_left, me,t-6-11,t-5-11], [move_left, me,t-5-11,t-4-11], [move_left, me,t-4-11,t-3-11], [move_left, me,t-3-11,t-2-11], [move_left, me,t-2-11,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+    [move_left, me,t-2-11,t-1-11]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-94
+Beliefset = {
+    me(test), 
+    In(1, 11), 
+    score(150), 
+    state(delivering), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p48)
+    other_agents()
+}
+Intention = {
+    In(go_deliver)
+}
+Plan = {
+    [move_up, me,t-6-9,t-6-10], [move_up, me,t-6-10,t-6-11], [move_left, me,t-6-11,t-5-11], [move_left, me,t-5-11,t-4-11], [move_left, me,t-4-11,t-3-11], [move_left, me,t-3-11,t-2-11], [move_left, me,t-2-11,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+    [move_left, me,t-1-11,t-0-11]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-95
+Beliefset = {
+    me(test), 
+    In(0, 11), 
+    score(150), 
+    state(patrolling), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p48)
+    other_agents()
+}
+Intention = {
+    In(go_deliver)
+}
+Plan = {
+    [move_up, me,t-6-9,t-6-10], [move_up, me,t-6-10,t-6-11], [move_left, me,t-6-11,t-5-11], [move_left, me,t-5-11,t-4-11], [move_left, me,t-4-11,t-3-11], [move_left, me,t-3-11,t-2-11], [move_left, me,t-2-11,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+    [putdown, t-0-11,me]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-96
+Beliefset = {
+    me(test), 
+    In(0, 11), 
+    score(164), 
+    state(patrolling), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p48)
+    other_agents()
+}
+Intention = {
+    In(patrolling)
+}
+Plan = {
+    [move_up, me,t-6-9,t-6-10], [move_up, me,t-6-10,t-6-11], [move_left, me,t-6-11,t-5-11], [move_left, me,t-5-11,t-4-11], [move_left, me,t-4-11,t-3-11], [move_left, me,t-3-11,t-2-11], [move_left, me,t-2-11,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-97
+Beliefset = {
+    me(test), 
+    In(1, 11), 
+    score(164), 
+    state(patrolling), 
+    actual_parcel_to_pick(no_parcel), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(patrolling)
+}
+Plan = {
+    [move_right, me,t-1-11,t-2-11], [move_right, me,t-2-11,t-3-11], [move_right, me,t-3-11,t-4-11], [move_right, me,t-4-11,t-5-11], [move_right, me,t-5-11,t-6-11], [move_right, me,t-6-11,t-7-11], [move_right, me,t-7-11,t-8-11], [move_right, me,t-8-11,t-9-11], [move_right, me,t-9-11,t-10-11], [move_right, me,t-10-11,t-11-11], [move_right, me,t-11-11,t-12-11], [move_right, me,t-12-11,t-13-11], [move_right, me,t-13-11,t-14-11], [move_right, me,t-14-11,t-15-11], [move_right, me,t-15-11,t-16-11], [move_right, me,t-16-11,t-17-11], [move_right, me,t-17-11,t-18-11], [move_down, me,t-18-11,t-18-10], [move_down, me,t-18-10,t-18-9], [move_down, me,t-18-9,t-18-8], [move_down, me,t-18-8,t-18-7], [patrollingdestination, t-18-7,me]
+}
+Do = {
+    [move_right, me,t-1-11,t-2-11]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-98
+Beliefset = {
+    me(test), 
+    In(2, 11), 
+    score(164), 
+    state(patrolling), 
+    actual_parcel_to_pick(no_parcel), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(patrolling)
+}
+Plan = {
+    [move_right, me,t-1-11,t-2-11], [move_right, me,t-2-11,t-3-11], [move_right, me,t-3-11,t-4-11], [move_right, me,t-4-11,t-5-11], [move_right, me,t-5-11,t-6-11], [move_right, me,t-6-11,t-7-11], [move_right, me,t-7-11,t-8-11], [move_right, me,t-8-11,t-9-11], [move_right, me,t-9-11,t-10-11], [move_right, me,t-10-11,t-11-11], [move_right, me,t-11-11,t-12-11], [move_right, me,t-12-11,t-13-11], [move_right, me,t-13-11,t-14-11], [move_right, me,t-14-11,t-15-11], [move_right, me,t-15-11,t-16-11], [move_right, me,t-16-11,t-17-11], [move_right, me,t-17-11,t-18-11], [move_down, me,t-18-11,t-18-10], [move_down, me,t-18-10,t-18-9], [move_down, me,t-18-9,t-18-8], [move_down, me,t-18-8,t-18-7], [patrollingdestination, t-18-7,me]
+}
+Do = {
+    [move_right, me,t-2-11,t-3-11]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-99
+Beliefset = {
+    me(test), 
+    In(3, 11), 
+    score(164), 
+    state(pickingup), 
+    actual_parcel_to_pick(p61), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,5,13,p61)
+}
+Plan = {
+    [move_right, me,t-1-11,t-2-11], [move_right, me,t-2-11,t-3-11], [move_right, me,t-3-11,t-4-11], [move_right, me,t-4-11,t-5-11], [move_right, me,t-5-11,t-6-11], [move_right, me,t-6-11,t-7-11], [move_right, me,t-7-11,t-8-11], [move_right, me,t-8-11,t-9-11], [move_right, me,t-9-11,t-10-11], [move_right, me,t-10-11,t-11-11], [move_right, me,t-11-11,t-12-11], [move_right, me,t-12-11,t-13-11], [move_right, me,t-13-11,t-14-11], [move_right, me,t-14-11,t-15-11], [move_right, me,t-15-11,t-16-11], [move_right, me,t-16-11,t-17-11], [move_right, me,t-17-11,t-18-11], [move_down, me,t-18-11,t-18-10], [move_down, me,t-18-10,t-18-9], [move_down, me,t-18-9,t-18-8], [move_down, me,t-18-8,t-18-7], [patrollingdestination, t-18-7,me]
+}
+Do = {
+    [move_right, me,t-3-11,t-4-11]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-100
+Beliefset = {
+    me(test), 
+    In(3, 12), 
+    score(164), 
+    state(pickingup), 
+    actual_parcel_to_pick(p61), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,5,13,p61)
+}
+Plan = {
+    [move_up, me,t-3-12,t-3-13], [move_right, me,t-3-13,t-4-13], [move_right, me,t-4-13,t-5-13], [pickup, t-5-13,me]
+}
+Do = {
+    [move_up, me,t-3-12,t-3-13]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-101
+Beliefset = {
+    me(test), 
+    In(3, 13), 
+    score(164), 
+    state(pickingup), 
+    actual_parcel_to_pick(p61), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,5,13,p61)
+}
+Plan = {
+    [move_up, me,t-3-12,t-3-13], [move_right, me,t-3-13,t-4-13], [move_right, me,t-4-13,t-5-13], [pickup, t-5-13,me]
+}
+Do = {
+    [move_right, me,t-3-13,t-4-13]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-102
+Beliefset = {
+    me(test), 
+    In(4, 13), 
+    score(164), 
+    state(pickingup), 
+    actual_parcel_to_pick(p61), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,5,13,p61)
+}
+Plan = {
+    [move_up, me,t-3-12,t-3-13], [move_right, me,t-3-13,t-4-13], [move_right, me,t-4-13,t-5-13], [pickup, t-5-13,me]
+}
+Do = {
+    [move_right, me,t-4-13,t-5-13]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-103
+Beliefset = {
+    me(test), 
+    In(5, 13), 
+    score(164), 
+    state(delivering), 
+    actual_parcel_to_pick(no_parcel), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,5,13,p61)
+}
+Plan = {
+    [move_up, me,t-3-12,t-3-13], [move_right, me,t-3-13,t-4-13], [move_right, me,t-4-13,t-5-13], [pickup, t-5-13,me]
+}
+Do = {
+    [pickup, t-5-13,me]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-104
+Beliefset = {
+    me(test), 
+    In(5, 12), 
+    score(164), 
+    state(delivering), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p61)
+    other_agents()
+}
+Intention = {
+    In(go_deliver)
+}
+Plan = {
+    [move_left, me,t-5-12,t-4-12], [move_left, me,t-4-12,t-3-12], [move_left, me,t-3-12,t-2-12], [move_left, me,t-2-12,t-1-12], [move_down, me,t-1-12,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+    [move_left, me,t-5-12,t-4-12]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-105
+Beliefset = {
+    me(test), 
+    In(4, 12), 
+    score(164), 
+    state(delivering), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p61)
+    other_agents()
+}
+Intention = {
+    In(go_deliver)
+}
+Plan = {
+    [move_left, me,t-5-12,t-4-12], [move_left, me,t-4-12,t-3-12], [move_left, me,t-3-12,t-2-12], [move_left, me,t-2-12,t-1-12], [move_down, me,t-1-12,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+    [move_left, me,t-4-12,t-3-12]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-106
+Beliefset = {
+    me(test), 
+    In(3, 12), 
+    score(164), 
+    state(delivering), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p61)
+    other_agents()
+}
+Intention = {
+    In(go_deliver)
+}
+Plan = {
+    [move_left, me,t-5-12,t-4-12], [move_left, me,t-4-12,t-3-12], [move_left, me,t-3-12,t-2-12], [move_left, me,t-2-12,t-1-12], [move_down, me,t-1-12,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+    [move_left, me,t-3-12,t-2-12]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-107
+Beliefset = {
+    me(test), 
+    In(2, 12), 
+    score(164), 
+    state(delivering), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p61)
+    other_agents()
+}
+Intention = {
+    In(go_deliver)
+}
+Plan = {
+    [move_left, me,t-5-12,t-4-12], [move_left, me,t-4-12,t-3-12], [move_left, me,t-3-12,t-2-12], [move_left, me,t-2-12,t-1-12], [move_down, me,t-1-12,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+    [move_left, me,t-2-12,t-1-12]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-108
+Beliefset = {
+    me(test), 
+    In(1, 12), 
+    score(164), 
+    state(delivering), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p61)
+    other_agents()
+}
+Intention = {
+    In(go_deliver)
+}
+Plan = {
+    [move_left, me,t-5-12,t-4-12], [move_left, me,t-4-12,t-3-12], [move_left, me,t-3-12,t-2-12], [move_left, me,t-2-12,t-1-12], [move_down, me,t-1-12,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+    [move_down, me,t-1-12,t-1-11]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-109
+Beliefset = {
+    me(test), 
+    In(1, 11), 
+    score(164), 
+    state(delivering), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p61)
+    other_agents()
+}
+Intention = {
+    In(go_deliver)
+}
+Plan = {
+    [move_left, me,t-5-12,t-4-12], [move_left, me,t-4-12,t-3-12], [move_left, me,t-3-12,t-2-12], [move_left, me,t-2-12,t-1-12], [move_down, me,t-1-12,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+    [move_left, me,t-1-11,t-0-11]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-110
+Beliefset = {
+    me(test), 
+    In(0, 11), 
+    score(164), 
+    state(patrolling), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p61)
+    other_agents()
+}
+Intention = {
+    In(go_deliver)
+}
+Plan = {
+    [move_left, me,t-5-12,t-4-12], [move_left, me,t-4-12,t-3-12], [move_left, me,t-3-12,t-2-12], [move_left, me,t-2-12,t-1-12], [move_down, me,t-1-12,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+    [putdown, t-0-11,me]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-111
+Beliefset = {
+    me(test), 
+    In(0, 11), 
+    score(190), 
+    state(patrolling), 
+    actual_parcel_to_pick(no_parcel), 
+    carry(p61)
+    other_agents()
+}
+Intention = {
+    In(patrolling)
+}
+Plan = {
+    [move_left, me,t-5-12,t-4-12], [move_left, me,t-4-12,t-3-12], [move_left, me,t-3-12,t-2-12], [move_left, me,t-2-12,t-1-12], [move_down, me,t-1-12,t-1-11], [move_left, me,t-1-11,t-0-11], [putdown, t-0-11,me]
+}
+Do = {
+
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-112
+Beliefset = {
+    me(test), 
+    In(1, 11), 
+    score(190), 
+    state(patrolling), 
+    actual_parcel_to_pick(no_parcel), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(patrolling)
+}
+Plan = {
+    [move_right, me,t-1-11,t-2-11], [move_right, me,t-2-11,t-3-11], [move_right, me,t-3-11,t-4-11], [move_right, me,t-4-11,t-5-11], [move_right, me,t-5-11,t-6-11], [move_right, me,t-6-11,t-7-11], [move_up, me,t-7-11,t-7-12], [patrollingdestination, t-7-12,me]
+}
+Do = {
+    [move_right, me,t-1-11,t-2-11]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-113
+Beliefset = {
+    me(test), 
+    In(2, 11), 
+    score(190), 
+    state(pickingup), 
+    actual_parcel_to_pick(p68), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,4,9,p68)
+}
+Plan = {
+    [move_right, me,t-1-11,t-2-11], [move_right, me,t-2-11,t-3-11], [move_right, me,t-3-11,t-4-11], [move_right, me,t-4-11,t-5-11], [move_right, me,t-5-11,t-6-11], [move_right, me,t-6-11,t-7-11], [move_up, me,t-7-11,t-7-12], [patrollingdestination, t-7-12,me]
+}
+Do = {
+    [move_right, me,t-2-11,t-3-11]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-114
+Beliefset = {
+    me(test), 
+    In(2, 10), 
+    score(190), 
+    state(pickingup), 
+    actual_parcel_to_pick(p68), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,4,9,p68)
+}
+Plan = {
+    [move_right, me,t-2-10,t-3-10], [move_right, me,t-3-10,t-4-10], [move_down, me,t-4-10,t-4-9], [pickup, t-4-9,me]
+}
+Do = {
+    [move_right, me,t-2-10,t-3-10]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-115
+Beliefset = {
+    me(test), 
+    In(3, 10), 
+    score(190), 
+    state(pickingup), 
+    actual_parcel_to_pick(p68), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,4,9,p68)
+}
+Plan = {
+    [move_right, me,t-2-10,t-3-10], [move_right, me,t-3-10,t-4-10], [move_down, me,t-4-10,t-4-9], [pickup, t-4-9,me]
+}
+Do = {
+    [move_right, me,t-3-10,t-4-10]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-116
+Beliefset = {
+    me(test), 
+    In(4, 10), 
+    score(190), 
+    state(pickingup), 
+    actual_parcel_to_pick(p68), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,4,9,p68)
+}
+Plan = {
+    [move_right, me,t-2-10,t-3-10], [move_right, me,t-3-10,t-4-10], [move_down, me,t-4-10,t-4-9], [pickup, t-4-9,me]
+}
+Do = {
+    [move_down, me,t-4-10,t-4-9]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-117
+Beliefset = {
+    me(test), 
+    In(4, 9), 
+    score(190), 
+    state(pickingup), 
+    actual_parcel_to_pick(p72), 
+    carry()
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,4,9,p68)
+}
+Plan = {
+    [move_right, me,t-2-10,t-3-10], [move_right, me,t-3-10,t-4-10], [move_down, me,t-4-10,t-4-9], [pickup, t-4-9,me]
+}
+Do = {
+    [pickup, t-4-9,me]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-118
+Beliefset = {
+    me(test), 
+    In(4, 10), 
+    score(190), 
+    state(pickingup), 
+    actual_parcel_to_pick(p73), 
+    carry(p68)
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,5,11,p73)
+}
+Plan = {
+    [move_up, me,t-4-10,t-4-11], [move_right, me,t-4-11,t-5-11], [pickup, t-5-11,me]
+}
+Do = {
+    [move_up, me,t-4-10,t-4-11]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-119
+Beliefset = {
+    me(test), 
+    In(4, 11), 
+    score(190), 
+    state(pickingup), 
+    actual_parcel_to_pick(p73), 
+    carry(p68)
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,5,11,p73)
+}
+Plan = {
+    [move_up, me,t-4-10,t-4-11], [move_right, me,t-4-11,t-5-11], [pickup, t-5-11,me]
+}
+Do = {
+    [move_right, me,t-4-11,t-5-11]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-120
+Beliefset = {
+    me(test), 
+    In(5, 11), 
+    score(190), 
+    state(pickingup), 
+    actual_parcel_to_pick(p72), 
+    carry(p68)
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,5,11,p73)
+}
+Plan = {
+    [move_up, me,t-4-10,t-4-11], [move_right, me,t-4-11,t-5-11], [pickup, t-5-11,me]
+}
+Do = {
+    [pickup, t-5-11,me]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-121
+Beliefset = {
+    me(test), 
+    In(5, 12), 
+    score(190), 
+    state(pickingup), 
+    actual_parcel_to_pick(p72), 
+    carry(p68, p73)
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,2,14,p72)
+}
+Plan = {
+    [move_up, me,t-5-12,t-5-13], [move_up, me,t-5-13,t-5-14], [move_left, me,t-5-14,t-4-14], [move_left, me,t-4-14,t-3-14], [move_left, me,t-3-14,t-2-14], [pickup, t-2-14,me]
+}
+Do = {
+    [move_up, me,t-5-12,t-5-13]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-122
+Beliefset = {
+    me(test), 
+    In(5, 13), 
+    score(190), 
+    state(pickingup), 
+    actual_parcel_to_pick(p76), 
+    carry(p68, p73)
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,2,13,p76)
+}
+Plan = {
+    [move_up, me,t-5-12,t-5-13], [move_up, me,t-5-13,t-5-14], [move_left, me,t-5-14,t-4-14], [move_left, me,t-4-14,t-3-14], [move_left, me,t-3-14,t-2-14], [pickup, t-2-14,me]
+}
+Do = {
+    [move_up, me,t-5-13,t-5-14]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-123
+Beliefset = {
+    me(test), 
+    In(4, 13), 
+    score(190), 
+    state(pickingup), 
+    actual_parcel_to_pick(p76), 
+    carry(p68, p73)
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,2,13,p76)
+}
+Plan = {
+    [move_left, me,t-4-13,t-3-13], [move_left, me,t-3-13,t-2-13], [pickup, t-2-13,me]
+}
+Do = {
+    [move_left, me,t-4-13,t-3-13]
+}
+---------------------------------------------------------------------------------------------------------------------------
+t-124
+Beliefset = {
+    me(test), 
+    In(3, 13), 
+    score(190), 
+    state(pickingup), 
+    actual_parcel_to_pick(p76), 
+    carry(p68, p73)
+    other_agents()
+}
+Intention = {
+    In(go_pick_up,2,13,p76)
+}
+Plan = {
+    [move_left, me,t-4-13,t-3-13], [move_left, me,t-3-13,t-2-13], [pickup, t-2-13,me]
+}
+Do = {
+    [move_left, me,t-3-13,t-2-13]
+}
+---------------------------------------------------------------------------------------------------------------------------

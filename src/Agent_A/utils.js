@@ -72,12 +72,11 @@ export function appendFile(){
         if (me.plan[me.plan_index] != undefined)
         content += `    [${me.plan[me.plan_index].action}, ${me.plan[me.plan_index].args}]`;   
     }
-    content += "\n}\n\n";
+    content += "\n}\n";
+    content += "---------------------------------------------------------------------------------------------------------------------------";
 
-
-
-
-
+    content += "\n";
+    
     t += 1;
 
     return new Promise((res, rej) => {

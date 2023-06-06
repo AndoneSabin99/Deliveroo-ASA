@@ -2,13 +2,13 @@ const config = {
 
     host: "http://localhost:8080/", // https://deliveroojs.onrender.com"
 
-    token_1: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjRkYTIyZDJlZTAxIiwibmFtZSI6InRlc3QiLCJpYXQiOjE2ODMwNjE1Njd9.pc8sOfbi-ELN842HKYT8f94wtmTcGc54vdRKAolEQJw',
+    token_1: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjFlMGI1OWVkNjE5IiwibmFtZSI6IkFnZW50ZUIiLCJpYXQiOjE2ODYwNjg4ODV9.k_FrN18htm7Tqmw17b-WTEoWEshacRHPn3MnWsjve-U',
 
-    id_1: '4da22d2ee01',
+    id_1: '1e0b59ed619',
 
-    token_2: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNlODBkN2NiZjk5IiwibmFtZSI6ImFnZW50ZSIsImlhdCI6MTY4NTIxNjEyM30._cCmbqqtr7tk8jD4yRcWf1_gngxNPBq9UkwjsgTc2H8',
+    token_2: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIxZTBiNTllZDYxIiwibmFtZSI6IkFnZW50ZUMiLCJpYXQiOjE2ODYwNjg4ODV9.gtiR13oD-okUueBOwx9vPZEUOxeMnwiB2YHc6TlECLI',
 
-    id_2: '3e80d7cbf99'
+    id_2: '21e0b59ed61'
 }
 /*
 const config = {

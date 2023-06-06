@@ -48,11 +48,9 @@ me.plan_index = 0;      //used for logger function
 //configuration variables
 export var MOVEMENT_DURATION;
 export var PARCEL_DECADING_INTERVAL;
-export var MAP;
 client.onConfig( (config) => {
     MOVEMENT_DURATION = config.MOVEMENT_DURATION;
     PARCEL_DECADING_INTERVAL = config.PARCEL_DECADING_INTERVAL == '1s' ? 1000 : 1000000;
-    MAP = config.MAP_FILE;
 } );
 
 //create map

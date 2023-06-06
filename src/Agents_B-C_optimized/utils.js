@@ -1,5 +1,5 @@
 import fs from 'fs';
-import {me, map, Agent, distance, state, MOVEMENT_DURATION, PARCEL_DECADING_INTERVAL} from "./Agent.js";
+import {me, map, Agent, distance, state, MOVEMENT_DURATION, PARCEL_DECADING_INTERVAL, agentsSensed} from "./Agent.js";
 
 
 //function for reading the domain-deliveroo.pddl file
@@ -8,6 +8,86 @@ export function readFile ( path ) {
         fs.readFile( path, 'utf8', (err, data) => {
             if (err) rej(err)
             else res(data)
+        })
+    })
+}
+
+var t = 0;
+//logger function, used for testing and validation purposes
+export function appendFile(){
+
+    var content = "t-"+t+"\n";
+    content += "Beliefset = {\n";
+    content += "    me(" + me.name + "), \n";
+    content += "    In(" + me.x + ", " + me.y + "), \n";
+    content += "    score(" + me.score + "), \n";
+    content += "    state(" + me.state + "), \n";
+    content += "    actual_parcel_to_pick(" + me.actual_parcel_to_pick + "), \n";
+    content += "    carry(";
+    
+    var carrying_map_size = me.carrying_map.size;
+    for (const value of me.carrying_map.values()) {
+        content += `${value.id}`     
+        if (carrying_map_size > 1){
+            content += ", ";
+            carrying_map_size -= 1;
+        }
+    }
+
+    content += ")\n";
+    content += "    other_agents(";
+    var agentsSensed_size = agentsSensed.size;
+    for (let [id, agent] of agentsSensed.entries()){
+        content += `[${agent.name}, ${agent.x}, ${agent.y}]`;
+        if (agentsSensed_size > 1){
+            content += ", ";
+            agentsSensed_size -= 1;
+        }
+    }
+    content += ")\n";
+    content += "}\n";
+    content += "Intention = {\n"
+    content += "    In(" + Agent.currentIntention.predicate + ")\n"
+    content += "}\n";
+
+    content += "Plan = {\n    ";
+    if(me.plan != undefined){
+        var plan_size = me.plan.slice(1).length;
+        for (const step of me.plan.slice(1).values()) {
+            content += `[${step.action}, ${step.args}]`;
+            if (plan_size > 1){
+                content += ", ";
+                plan_size -= 1;
+            }
+        }
+    }
+    
+    content += "\n}\n";
+
+    content += "Do = {\n";
+
+    if(me.plan != undefined){
+        me.plan_index +=1; 
+        if (me.plan[me.plan_index] != undefined)
+        content += `    [${me.plan[me.plan_index].action}, ${me.plan[me.plan_index].args}]`;   
+    }
+    content += "\n}\n";
+    content += "---------------------------------------------------------------------------------------------------------------------------";
+
+    content += "\n";
+    
+    t += 1;
+
+    return new Promise((res, rej) => {
+        var path = "";
+        if (process.argv[2] == "1"){
+            path = "./test_1.txt"
+        }else{
+            path = "./test_2.txt"
+        }
+        fs.appendFile(path, content, (err) => {
+            if (err) rej(err)
+            else res(content)
         })
     })
 }

@@ -2,9 +2,9 @@ import { DeliverooApi } from "@unitn-asa/deliveroo-js-client";
 import {IntentionRevision} from "./intention.js";
 import depth_search_daemon from "./depth_search_daemon.js";
 import { default as config } from "../config.js";
-import {pickupParcel} from "./utils.js";
+import {appendFile, pickupParcel} from "./utils.js";
 
-
+ 
 
 let token = "";
 let id_ask = "";
@@ -17,9 +17,15 @@ if (process.argv[2] == "1"){
     id_ask = config.id_1;
 }
 
+/*
+The four states that the agent may assume during runtime. 
+'nothing': the agent does nothing. This is the intial state that the agent assumes
+'patrolling': the agent has not sensed any parcels, thus it patrolls randomly in the map
+'pickingup': the agent has sensed a parcel and goes to pick it
+'delivering': the agent goes to deliver 
+*/
 export const state = ['nothing', 'patrolling', 'pickingup', 'delivering'];
 
-//CODE FOR AGENT B and C
 
 //creating new client to apply script to our agent
 export const client = new DeliverooApi(
@@ -47,8 +53,11 @@ client.onYou( ( {id, name, x, y, score} ) => {
     me.x = x
     me.y = y
     me.score = score
-    //console.log("Me.alone: " + me.alone);
-} ) 
+    if (me.x % 1 == 0 && me.y % 1 == 0){
+        appendFile();
+    }} ) 
+me.plan = undefined;    //used for logger function
+me.plan_index = 0;      //used for logger function
 
 export var MOVEMENT_DURATION
 export var PARCEL_DECADING_INTERVAL
@@ -97,6 +106,7 @@ export const parcels = new Map();
 client.onParcelsSensing( async ( perceived_parcels ) => {
     for (const p of perceived_parcels) {
         if ( ! parcels.has(p.id) && p.carriedBy == null){
+        //if (distance(me,{x: p.x, y: p.y}) > 1 || (me.x == p.x && me.y == ))
             //console.log("I SENSE A NEW PARCEL AT POSITION "+p.x+" "+p.y);
             const my_distance = distance(me, {x: p.x, y: p.y});
             //console.log("My distance is " + my_distance);

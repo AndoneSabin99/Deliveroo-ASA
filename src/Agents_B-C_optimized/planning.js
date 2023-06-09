@@ -1,6 +1,6 @@
 import { onlineSolver, PddlExecutor, PddlProblem, Beliefset, PddlDomain, PddlAction } from "@unitn-asa/pddl-client";
 import {readFile, nearestDelivery} from "./utils.js";
-import {me, client, agentsSensed, map, Agent, distance, state} from "./Agent.js";
+import {me, client, agentsSensed, map, Agent, distance, state, id_ask} from "./Agent.js";
 import {Intention} from "./intention.js";
 
 //variable used to decide if the agent moved or not
@@ -77,10 +77,11 @@ class Patrolling extends Plan {
         moveBeliefset.declare('me me');
         moveBeliefset.undeclare('arrived');
         //we need to consider all the agents that may block our path
+        /*
         for (let [id, agent] of agentsSensed.entries()){
             moveBeliefset.declare('blocked t-'+agent.x+'-'+agent.y);
             //console.log(agent);
-        }
+        }*/
 
         //get the map as an array of tiles in order to declare the entire map for the beliefset
         let tile_list = Array.from( map.tiles.values() );
@@ -150,7 +151,7 @@ class Patrolling extends Plan {
         var plan = await onlineSolver( domain, problem );
 
         //if no plan has found, then we go back to 'nothing' state
-        if (plan == undefined){
+        if (plan == undefined && me.state != state[4]){
             me.state = state[0];
         }else{
             me.plan = plan;
@@ -200,11 +201,11 @@ class Patrolling extends Plan {
 
 class GoPickUp extends Plan {
 
-    static isApplicableTo ( go_pick_up, x, y, id ) {
+    static isApplicableTo ( go_pick_up, x, y, id, insist ) {
         return go_pick_up == 'go_pick_up';
     }
  
-    async execute ( go_pick_up, x, y, id ) {
+    async execute ( go_pick_up, x, y, id, insist ) {
 
         //if for some reason the state is not 'pickingup' even tought we are still doing GoPickUp plan, 
         //we put it to that state so we are sure that we are in picking up state
@@ -277,8 +278,13 @@ class GoPickUp extends Plan {
 
         //if no plan has found, then we go back to 'nothing' state
         if (plan == undefined){
-            me.state = state[0];
-            me.actual_parcel_to_pick = 'no_parcel'; 
+            if (insist){
+                me.state = state[2]
+                Agent.push( [ 'go_pick_up', x, y, id, insist ] );
+            }else{
+                me.state = state[0];
+                me.actual_parcel_to_pick = 'no_parcel';
+            }
         }else{
             me.plan = plan;
             me.plan_index = 0; 
@@ -289,9 +295,9 @@ class GoPickUp extends Plan {
                                                 ,{ name: 'move_left', executor: () => this.planMove('left').catch(err => {throw err})}
                                                 ,{ name: 'move_up', executor: () =>  this.planMove('up').catch(err => {throw err})}
                                                 ,{ name: 'move_down', executor: () =>  this.planMove('down').catch(err => {throw err})}
-                                                ,{ name: 'pickup', executor: () => this.checkIfArrived(x,y,id).catch(err => {throw err})});
+                                                ,{ name: 'pickup', executor: () => this.checkIfArrived(x,y,id,insist).catch(err => {throw err})});
 
-        pddlExecutor.exec( plan ).catch(err => {this.RedoGoPickUp(x,y,id)});
+        pddlExecutor.exec( plan ).catch(err => {this.RedoGoPickUp(x,y,id,insist)});
 
         if ( this.stopped ) throw ['stopped']; // if stopped then quit
         return true;
@@ -299,18 +305,19 @@ class GoPickUp extends Plan {
     }
 
     //function called when the Agent has to redo the GoPickUp plan
-    async RedoGoPickUp(x, y, id){
+    async RedoGoPickUp(x, y, id, insist){
         //console.log("Redo planning");
 
         //if the agent is still in state 'pickingup' and can move towards the parcel (which means that the agent is not
         //stuck and sensed another parcel, then we postpone the old intention in order to go pick the new parcel)
         //otherwise we just retry the plan
         if (me.state == state[2] && moved){
-            Agent.parcelsToPick.push([ 'go_pick_up', x, y, id ]);
+            Agent.parcelsToPick.push([ 'go_pick_up', x, y, id, insist ]);
         }else{
             me.state = state[2]
-            Agent.push( [ 'go_pick_up', x, y, id ] );
+            Agent.push( [ 'go_pick_up', x, y, id, insist ] );
         }
+        return true;
     }
 
     //move function for Plan
@@ -330,7 +337,7 @@ class GoPickUp extends Plan {
     }
 
     //function used to check if the agent is really at the tile where it should be (i.e. the tile with the parcel to pick up)
-    async checkIfArrived(x,y,id){
+    async checkIfArrived(x,y,id,insist){
         if (Math.round(me.x) == x && Math.round(me.y) == y){
             client.pickup();
             me.state = state[0];
@@ -338,7 +345,7 @@ class GoPickUp extends Plan {
             me.carrying = true;
         }else{
             me.state = state[2]
-            Agent.push( [ 'go_pick_up', x, y, id ] );
+            Agent.push( [ 'go_pick_up', x, y, id, insist] );
         }
     }
 }
@@ -430,6 +437,37 @@ class GoDeliver extends Plan {
             if (me.carrying_map.size == 0){
                 me.carrying = false;
             }
+            
+            //if (!me.alone){
+            if (agentsSensed.has(me.teammate.id)){
+
+                let tile_list = Array.from( map.tiles.values() );
+
+                let direction = '';
+                for(let tile of tile_list){
+                    let right =  tile.x == me.x+1 && tile.y == me.y;
+                    if (right){
+                        direction = 'right';
+                    }   
+                    let left =  tile.x == me.x-1 && tile.y == me.y;
+                    if (left){
+                        direction = 'left';
+                    }
+                    let up =  tile.x == me.x && tile.y == me.y+1;
+                    if (up){
+                        direction = 'up';
+                    }
+                    let down =  tile.x == me.x && tile.y == me.y-1;
+                    if (down){
+                        direction = 'down';
+                    }
+                }
+                
+                client.say(id_ask, {
+                    move_away: true,
+                    direction: direction
+                })
+            }
         }else{
             me.plan = plan;
             me.plan_index = 0; 
@@ -451,6 +489,50 @@ class GoDeliver extends Plan {
 
     //function called when the Agent has to redo the GoDeliver plan
     async RedoGoPutdown(){
+        if (!moved && me.near){
+            let tile_list = Array.from( map.tiles.values() ).filter( (tile) => distance(me,tile) == 1 );
+            if (tile_list.length == 0){
+                client.say(id_ask, {
+                    move_away: true,
+                    direction: 'up'
+                })
+            }else{
+                await client.putdown();
+                const coordinates = {x: me.x, y:me.y}
+                me.state = state[0];
+                me.carrying = false
+                //const tile_to_go = tile_list[Math.floor(Math.random() * tile_list.length)];
+
+                let direction = '';
+                for(let tile of tile_list){
+                    let right =  tile.x == me.x+1 && tile.y == me.y;
+                    if (right){
+                        direction = 'right';
+                    }   
+                    let left =  tile.x == me.x-1 && tile.y == me.y;
+                    if (left){
+                        direction = 'left';
+                    }
+                    let up =  tile.x == me.x && tile.y == me.y+1;
+                    if (up){
+                        direction = 'up';
+                    }
+                    let down =  tile.x == me.x && tile.y == me.y-1;
+                    if (down){
+                        direction = 'down';
+                    }
+                }
+
+                //console.log("Direction here is " + direction);
+
+                await client.move(direction);
+                
+                client.say(id_ask, {
+                    go_to_pick: true,
+                    parcel_coordinates: coordinates
+                })
+            }
+        }
         //console.log("Redo planning");
 
         //we check if the agent is still carrying parcel, if yes then the agent tries again to deliver, 
@@ -462,6 +544,9 @@ class GoDeliver extends Plan {
             me.state = state[0];
             me.carrying = false;
         }
+
+        
+        
         return true;
     }
 

@@ -1,5 +1,5 @@
 import fs from 'fs';
-import {me, map, Agent, distance, state, MOVEMENT_DURATION, PARCEL_DECADING_INTERVAL, agentsSensed} from "./Agent.js";
+import {me, map, Agent, distance, state, MOVEMENT_DURATION, PARCEL_DECADING_INTERVAL, agentsSensed, client, id_ask} from "./Agent.js";
 
 
 //function for reading the domain-deliveroo.pddl file
@@ -92,6 +92,8 @@ export function appendFile(){
     })
 }
 
+
+
 //function for getting the nearest delivery tile from {x,y} coordinates
 export function nearestDelivery({x, y}) {
     return Array.from( map.tiles.values() ).filter( ({delivery}) => delivery ).sort( (a,b) => distance(a,{x, y})-distance(b,{x, y}) )[0]
@@ -152,9 +154,18 @@ export function isWorthPickup(x, y, reward){
     }
 }
 
-export function pickupParcel(x, y, id, reward){
+export function pickupParcel(x, y, id, reward, insist = false){
+
+    if (insist){
+        me.state = state[2]
+        me.actual_parcel_to_pick = "teammate parcels";
+        Agent.push( [ 'go_pick_up', x, y, id, true ] );   
+        return true;
+    }
+
     //build the predicate to push
-    const predicate = [ 'go_pick_up', x, y, id ];
+    const predicate = [ 'go_pick_up', x, y, id, false ];
+
 
     //check the state
     if (me.state == state[3]){

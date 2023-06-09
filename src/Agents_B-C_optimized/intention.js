@@ -1,6 +1,5 @@
 import {planLibrary} from "./planning.js"
 import {parcels, me, state, distance} from "./Agent.js";
-
  
 /**
  * Intention
@@ -132,7 +131,7 @@ export class IntentionRevision {
 
                     //check if I am picking the correct parcel, this check is important because otherwise the agent may
                     //try to pick up two parcel at the same time, thus staying stuck between two GoPickUp plans
-                    if (me.actual_parcel_to_pick != id){
+                    if (me.actual_parcel_to_pick != id && !intention.predicate[4]){
                         this.parcelsToPick.push(predicate);
                         console.log("ALREADY PICKING UP A PARCEL. PUT THE OTHER ONE IN THE PARCELS TO PICK QUEUE");
                         continue;
@@ -182,6 +181,8 @@ export class IntentionRevision {
                         }
                     } 
                 }
+
+                
                          
             }
 
@@ -199,9 +200,10 @@ export class IntentionRevision {
         // console.log( 'IntentionRevisionReplace.push', predicate );
 
         // // Check if already queued
+        console.log(predicate);
         if ( this.intention_queue.find( (p) => p.join(' ') == predicate.join(' ') ) )
              return;
-
+             
         // Prioritize pushed one
         this.intention_queue.unshift( predicate );
 

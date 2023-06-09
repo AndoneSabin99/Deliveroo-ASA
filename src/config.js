@@ -6,9 +6,9 @@ const config = {
 
     id_1: '1e0b59ed619',
 
-    token_2: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIxZTBiNTllZDYxIiwibmFtZSI6IkFnZW50ZUMiLCJpYXQiOjE2ODYwNjg4ODV9.gtiR13oD-okUueBOwx9vPZEUOxeMnwiB2YHc6TlECLI',
+    token_2: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjkzOGUzZjBjMjFlIiwibmFtZSI6IkFnZW50ZUMiLCJpYXQiOjE2ODYxNjYzNTd9.0UprTmvhoN78ypkC9kH_V6i2Bnc-6YlnROCEOSyFFCM',
 
-    id_2: '21e0b59ed61'
+    id_2: '938e3f0c21e'
 }
 /*
 const config = {

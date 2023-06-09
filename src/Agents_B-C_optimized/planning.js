@@ -69,53 +69,7 @@ class Patrolling extends Plan {
             return true;
         }
 
-        //create new beliefset for problem
-        const moveBeliefset = new Beliefset();
-
-        //beliefset declarations
-        moveBeliefset.declare('at me t-'+Math.round(me.x)+'-'+Math.round(me.y)+'');
-        moveBeliefset.declare('me me');
-        moveBeliefset.undeclare('arrived');
-        //we need to consider all the agents that may block our path
-        /*
-        for (let [id, agent] of agentsSensed.entries()){
-            moveBeliefset.declare('blocked t-'+agent.x+'-'+agent.y);
-            //console.log(agent);
-        }*/
-
-        //get the map as an array of tiles in order to declare the entire map for the beliefset
-        let tile_list = Array.from( map.tiles.values() );
-        //console.log(tile_list);
-        for(let tile of tile_list){
-
-            moveBeliefset.declare("tile t-"+tile.x+"-"+tile.y);
-
-            //if it is a delivery tile we also declare this condition
-            if(tile.delivery){
-                moveBeliefset.declare("delivery t-"+tile.x+"-"+tile.y);
-            }
-
-            //for every direction, check the adjacency relation between other tiles
-            let right = tile_list.find((tile_right) => tile.x == tile_right.x-1 && tile.y == tile_right.y);
-            if (right){
-                moveBeliefset.declare("right t-"+tile.x+"-"+tile.y+" t-"+(tile.x+1)+"-"+tile.y);
-    
-            }
-            let left = tile_list.find((tile_left) => tile.x == tile_left.x+1 && tile.y == tile_left.y);
-            if (left){
-                moveBeliefset.declare("left t-"+tile.x+"-"+tile.y+" t-"+(tile.x-1)+"-"+tile.y);
-    
-            }
-            let up = tile_list.find((tile_up) => tile.x == tile_up.x && tile.y == tile_up.y-1);
-            if (up){
-                moveBeliefset.declare("up t-"+tile.x+"-"+tile.y+" t-"+tile.x+"-"+(tile.y+1));
-    
-            }
-            let down = tile_list.find((tile_down) => tile.x == tile_down.x && tile.y == tile_down.y+1);
-            if (down){
-                moveBeliefset.declare("down t-"+tile.x+"-"+tile.y+" t-"+tile.x+"-"+(tile.y-1));    
-            }
-        }
+        const beliefset = createBeliefSet();
 
         //Specifically for patrolling plan, we randomly choose a tile where parcels spawn
         //but first we need the filtered array with only tiles where parcels spawn
@@ -133,13 +87,15 @@ class Patrolling extends Plan {
         //choose a random parcelSpawner tile
         let i = Math.floor( Math.random() * reachableParcelSpawnerTileList.length );
         let destinationTile = reachableParcelSpawnerTileList.at(i);
-        moveBeliefset.declare("parcelSpawner t-"+destinationTile.x+"-"+destinationTile.y);
+        beliefset.undeclare('arrived');
+        beliefset.declare("parcelSpawner t-"+destinationTile.x+"-"+destinationTile.y);
+        
 
         //build pddl problem
         var pddlProblem = new PddlProblem(
             'deliveroo',
-            moveBeliefset.objects.join(' '),
-            moveBeliefset.toPddlString(),
+            beliefset.objects.join(' '),
+            beliefset.toPddlString(),
             'and (arrived)'
         )
 
@@ -214,57 +170,16 @@ class GoPickUp extends Plan {
         }
 
         //create new beliefset for problem
-        const moveBeliefset = new Beliefset();
-
-        //beliefset declarations
-        moveBeliefset.declare('at me t-'+Math.round(me.x)+'-'+Math.round(me.y)+'');
-        moveBeliefset.declare('me me');
-        moveBeliefset.declare('parcelTile t-'+x+'-'+y+'');
-        moveBeliefset.undeclare('carryingParcel');
-        //we need to consider all the agents that may block our path
-        for (let [id, agent] of agentsSensed.entries()){
-            moveBeliefset.declare('blocked t-'+agent.x+'-'+agent.y);
-        }
-
-        //get the map as an array of tiles in order to declare the entire map for the beliefset
-        let tile_list = Array.from( map.tiles.values() );
-        for(let tile of tile_list){
-
-            moveBeliefset.declare("tile t-"+tile.x+"-"+tile.y);
-
-            //if it is a delivery tile we also declare this condition
-            if(tile.delivery){
-                moveBeliefset.declare("delivery t-"+tile.x+"-"+tile.y);
-            }
-
-            //for every direction, check the adjacency relation between other tiles
-            let right = tile_list.find((tile_right) => tile.x == tile_right.x-1 && tile.y == tile_right.y);
-            if (right){
-                moveBeliefset.declare("right t-"+tile.x+"-"+tile.y+" t-"+(tile.x+1)+"-"+tile.y);
-    
-            }
-            let left = tile_list.find((tile_left) => tile.x == tile_left.x+1 && tile.y == tile_left.y);
-            if (left){
-                moveBeliefset.declare("left t-"+tile.x+"-"+tile.y+" t-"+(tile.x-1)+"-"+tile.y);
-    
-            }
-            let up = tile_list.find((tile_up) => tile.x == tile_up.x && tile.y == tile_up.y-1);
-            if (up){
-                moveBeliefset.declare("up t-"+tile.x+"-"+tile.y+" t-"+tile.x+"-"+(tile.y+1));
-    
-            }
-            let down = tile_list.find((tile_down) => tile.x == tile_down.x && tile.y == tile_down.y+1);
-            if (down){
-                moveBeliefset.declare("down t-"+tile.x+"-"+tile.y+" t-"+tile.x+"-"+(tile.y-1));    
-            }
-
-        }
+        const beliefset = createBeliefSet();
+        beliefset.undeclare('carryingParcel');
+        beliefset.declare('parcelTile t-'+x+'-'+y+'');
+        
 
         //build pddl problem
         var pddlProblem = new PddlProblem(
             'deliveroo',
-            moveBeliefset.objects.join(' '),
-            moveBeliefset.toPddlString(),
+            beliefset.objects.join(' '),
+            beliefset.toPddlString(),
             'and (carryingParcel)'
         )
 
@@ -278,6 +193,8 @@ class GoPickUp extends Plan {
 
         //if no plan has found, then we go back to 'nothing' state
         if (plan == undefined){
+            //check if there is at most one agent and insist is true, i.e. this go_pick_up plan 
+            //has been pushed since teammate has been blocked by the agent
             if (insist && agentsSensed.size < 2){
                 me.state = state[2]
                 Agent.push( [ 'go_pick_up', x, y, id, insist ] );
@@ -306,8 +223,6 @@ class GoPickUp extends Plan {
 
     //function called when the Agent has to redo the GoPickUp plan
     async RedoGoPickUp(x, y, id, insist){
-        //console.log("Redo planning");
-
         //if the agent is still in state 'pickingup' and can move towards the parcel (which means that the agent is not
         //stuck and sensed another parcel, then we postpone the old intention in order to go pick the new parcel)
         //otherwise we just retry the plan
@@ -367,57 +282,13 @@ class GoDeliver extends Plan {
         }
 
         //create new beliefset for problem
-        const moveBeliefset = new Beliefset();
-
-        //beliefset declarations
-        moveBeliefset.declare('at me t-'+Math.round(me.x)+'-'+Math.round(me.y)+'');
-        moveBeliefset.declare('me me');
-        moveBeliefset.undeclare('deliveryMade');
-        //we need to consider all the agents that may block our path
-        for (let [id, agent] of agentsSensed.entries()){
-            moveBeliefset.declare('blocked t-'+agent.x+'-'+agent.y);
-        }
-
-        //get the map as an array of tiles in order to declare the entire map for the beliefset
-        let tile_list = Array.from( map.tiles.values() );
-        for(let tile of tile_list){
-
-            moveBeliefset.declare("tile t-"+tile.x+"-"+tile.y);
-
-            //if it is a delivery tile we also declare this condition
-            //useful especially in this plan since we need to deliver the parcels
-            if(tile.delivery){
-                moveBeliefset.declare("delivery t-"+tile.x+"-"+tile.y);
-            }
-
-            //for every direction, check the adjacency relation between other tiles
-            let right = tile_list.find((tile_right) => tile.x == tile_right.x-1 && tile.y == tile_right.y);
-            if (right){
-                moveBeliefset.declare("right t-"+tile.x+"-"+tile.y+" t-"+(tile.x+1)+"-"+tile.y);
-    
-            }
-            let left = tile_list.find((tile_left) => tile.x == tile_left.x+1 && tile.y == tile_left.y);
-            if (left){
-                moveBeliefset.declare("left t-"+tile.x+"-"+tile.y+" t-"+(tile.x-1)+"-"+tile.y);
-    
-            }
-            let up = tile_list.find((tile_up) => tile.x == tile_up.x && tile.y == tile_up.y-1);
-            if (up){
-                moveBeliefset.declare("up t-"+tile.x+"-"+tile.y+" t-"+tile.x+"-"+(tile.y+1));
-    
-            }
-            let down = tile_list.find((tile_down) => tile.x == tile_down.x && tile.y == tile_down.y+1);
-            if (down){
-                moveBeliefset.declare("down t-"+tile.x+"-"+tile.y+" t-"+tile.x+"-"+(tile.y-1));    
-            }
-
-        }
+        const beliefset = createBeliefSet();
 
         //build pddl problem
         var pddlProblem = new PddlProblem(
             'deliveroo',
-            moveBeliefset.objects.join(' '),
-            moveBeliefset.toPddlString(),
+            beliefset.objects.join(' '),
+            beliefset.toPddlString(),
             'and (deliveryMade)'
         )
 
@@ -521,9 +392,6 @@ class GoDeliver extends Plan {
                         direction = 'down';
                     }
                 }
-
-                //console.log("Direction here is " + direction);
-
                 await client.move(direction);
                 
                 client.say(id_ask, {
@@ -532,8 +400,6 @@ class GoDeliver extends Plan {
                 })
             }
         }
-        //console.log("Redo planning");
-
         //we check if the agent is still carrying parcel, if yes then the agent tries again to deliver, 
         //otherwise it goes back to 'nothing' state
         if (me.carrying_map.size > 0){
@@ -555,8 +421,6 @@ class GoDeliver extends Plan {
         //first check if the plan has been stopped, then move and if the agent is stuck, stop the plan rightaway
         if (!this.stopped){
             moved = await client.move(direction);
-            //console.log("RIGHT NOW I HAVE THESE PARCELS: " + me.carrying_map.size);
-
             //for the GoDeliver plan we check also if the agent is still carrying some parcels
             //because once all the parcels expire it does not make sense for the agent to continue its way
             //to the delivery tile since in this case it will not deliver any parcel, thus it will stop its plan
@@ -594,3 +458,56 @@ export const planLibrary = [];
 planLibrary.push( Patrolling );
 planLibrary.push( GoPickUp );
 planLibrary.push( GoDeliver );
+
+function createBeliefSet(){
+        //create new beliefset for problem
+        var beliefset = new Beliefset();
+
+        //beliefset declarations
+        beliefset.declare('at me t-'+Math.round(me.x)+'-'+Math.round(me.y)+'');
+        beliefset.declare('me me');
+
+        if (me.state == state[3]){
+            beliefset.undeclare('deliveryMade');
+        }
+
+        //we need to consider all the agents that may block our path
+        for (let [id, agent] of agentsSensed.entries()){
+            beliefset.declare('blocked t-'+agent.x+'-'+agent.y);
+        }
+
+        //get the map as an array of tiles in order to declare the entire map for the beliefset
+        let tile_list = Array.from( map.tiles.values() );
+        for(let tile of tile_list){
+
+            beliefset.declare("tile t-"+tile.x+"-"+tile.y);
+
+            //if it is a delivery tile we also declare this condition
+            if(tile.delivery){
+                beliefset.declare("delivery t-"+tile.x+"-"+tile.y);
+            }
+
+            //for every direction, check the adjacency relation between other tiles
+            let right = tile_list.find((tile_right) => tile.x == tile_right.x-1 && tile.y == tile_right.y);
+            if (right){
+                beliefset.declare("right t-"+tile.x+"-"+tile.y+" t-"+(tile.x+1)+"-"+tile.y);
+    
+            }
+            let left = tile_list.find((tile_left) => tile.x == tile_left.x+1 && tile.y == tile_left.y);
+            if (left){
+                beliefset.declare("left t-"+tile.x+"-"+tile.y+" t-"+(tile.x-1)+"-"+tile.y);
+    
+            }
+            let up = tile_list.find((tile_up) => tile.x == tile_up.x && tile.y == tile_up.y-1);
+            if (up){
+                beliefset.declare("up t-"+tile.x+"-"+tile.y+" t-"+tile.x+"-"+(tile.y+1));
+    
+            }
+            let down = tile_list.find((tile_down) => tile.x == tile_down.x && tile.y == tile_down.y+1);
+            if (down){
+                beliefset.declare("down t-"+tile.x+"-"+tile.y+" t-"+tile.x+"-"+(tile.y-1));    
+            }
+        }
+
+        return beliefset;
+}

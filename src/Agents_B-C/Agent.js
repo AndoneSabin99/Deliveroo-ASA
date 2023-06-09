@@ -58,6 +58,8 @@ client.onYou( ( {id, name, x, y, score} ) => {
     }} ) 
 me.plan = undefined;    //used for logger function
 me.plan_index = 0;      //used for logger function
+me.teammate = undefined;    //used for keeping track about mental state of teammate
+
 
 export var MOVEMENT_DURATION
 export var PARCEL_DECADING_INTERVAL
@@ -99,6 +101,15 @@ client.onAgentsSensing( ( agents ) => {
             continue;
             agentsSensed.set( a.id, a );
     }
+
+    //taking also teammate's agents
+    if (me.teammate != undefined){
+        for (const a of Array.from(me.teammate.agents).values()) {
+            if ( a.x % 1 != 0 || a.y % 1 != 0 ) // skip intermediate values (0.6 or 0.4)
+                continue;
+            agentsSensed.set( a.id, a );        
+        }
+    }
 } )
 
 //parcel sensing
@@ -109,35 +120,29 @@ client.onParcelsSensing( async ( perceived_parcels ) => {
         //if (distance(me,{x: p.x, y: p.y}) > 1 || (me.x == p.x && me.y == ))
             //console.log("I SENSE A NEW PARCEL AT POSITION "+p.x+" "+p.y);
             const my_distance = distance(me, {x: p.x, y: p.y});
-            //console.log("My distance is " + my_distance);
             let reply = client.ask( id_ask, {
-                x_p: p.x,
+                x_p: p.x, 
                 y_p: p.y,
                 teammate_distance: my_distance,
                 p_id: p.id,
                 p_reward: p.reward,
                 parcel_to_pickup: p
             } ).then( (answer) => {
-                //console.log("Answer from ask function" + answer);                
                 if (answer == true){
                     pickupParcel(p.x,p.y,p.id,p.reward);
-                }
+                } 
             }).catch( (error) =>{
                 console.log("Error from ask: " + error);
             })
 
             if (me.alone){
-                console.log("TEAMMATE NO AVAILABLE, NEED TO DO PICKUP AND DELIVER ALONE");
+                //console.log("TEAMMATE NO AVAILABLE, NEED TO DO PICKUP AND DELIVER ALONE");
                 pickupParcel(p.x,p.y,p.id,p.reward);
-            }else{
-                //console.log("MY TEAMMATE IS HERE");
             }
+
+            parcels.set( p.id, p) 
         }
 
-
-
-        //console.log("Parcel id " + p.id + " and parcel "+ p);
-        parcels.set( p.id, p) 
         if ( p.carriedBy == me.id ) {
             me.carrying_map.set( p.id, p );
         }
@@ -157,18 +162,25 @@ client.onMsg( (id, name, msg, reply) => {
 
     //console.log("new msg received from", name+':', msg);
     let answer = "";
+    //receive information about teammate
+    if(msg.teammate != undefined){
+        me.teammate = msg.teammate;
+    }
 
+    //received when the teammates connects and starts its loop
     if (msg.i_am_here == true){
         me.alone = false;
+
+        client.say( id_ask , {
+            teammate: {id: me.id, x: me.x, y: me.y, agents: agentsSensed}
+        })
+
         answer = true;
-    }else{
-        //console.log("x: " + msg.x_p + " y: " + msg.y_p);
+    }
+
+    if (msg.parcel_to_pickup != undefined){
         const my_distance = distance(me,{x: msg.x_p,y: msg.y_p});
-        //console.log("ME: " + my_distance + " and TEAMMATE: "+ msg.teammate_distance);
-
-        //console.log("P_ID " + msg.p_id + " AND PARCEL TO PICKUP " + msg.parcel_to_pickup);
         parcels.set( msg.p_id, msg.parcel_to_pickup);
-
 
         if( my_distance == 0 ){
             answer = true;
@@ -183,8 +195,6 @@ client.onMsg( (id, name, msg, reply) => {
                 }
             }
         }
-
-        //console.log(answer);
         if (!answer){
             let pickedup = pickupParcel(msg.x_p, msg.y_p, msg.p_id, msg.p_reward);
             if (!pickedup){
@@ -211,6 +221,11 @@ let reply = client.ask( id_ask, {
     if (answer){
         me.alone = false;
     }
+})
+
+//send mental state to the teammate
+client.say( id_ask , {
+    teammate: {id: me.id, x: me.x, y: me.y, agents: agentsSensed}
 })
 
 

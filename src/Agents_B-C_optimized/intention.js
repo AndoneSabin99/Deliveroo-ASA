@@ -133,7 +133,7 @@ export class IntentionRevision {
                     //try to pick up two parcel at the same time, thus staying stuck between two GoPickUp plans
                     if (me.actual_parcel_to_pick != id && !intention.predicate[4]){
                         this.parcelsToPick.push(predicate);
-                        console.log("ALREADY PICKING UP A PARCEL. PUT THE OTHER ONE IN THE PARCELS TO PICK QUEUE");
+                        console.log("ALREADY PICKING UP A PARCEL. PUT THE OTHER ONE IN THE QUEUE");
                         continue;
                     }
                 }
@@ -200,10 +200,10 @@ export class IntentionRevision {
         // console.log( 'IntentionRevisionReplace.push', predicate );
 
         // // Check if already queued
-        console.log(predicate);
+        //console.log(predicate);
         if ( this.intention_queue.find( (p) => p.join(' ') == predicate.join(' ') ) )
              return;
-             
+
         // Prioritize pushed one
         this.intention_queue.unshift( predicate );
 

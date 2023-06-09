@@ -4,8 +4,6 @@ import depth_search_daemon from "./depth_search_daemon.js";
 import { default as config } from "../config.js";
 import {appendFile, pickupParcel} from "./utils.js";
 
- 
-
 let token = "";
 export let id_ask = "";
 
@@ -24,7 +22,7 @@ The four states that the agent may assume during runtime.
 'pickingup': the agent has sensed a parcel and goes to pick it
 'delivering': the agent goes to deliver 
 */
-export const state = ['nothing', 'patrolling', 'pickingup', 'delivering', 'exchange'];
+export const state = ['nothing', 'patrolling', 'pickingup', 'delivering'];
 
 
 //creating new client to apply script to our agent
@@ -99,14 +97,14 @@ client.onTile( (x, y, delivery) => {
 export const agentsSensed = new Map();
 client.onAgentsSensing( ( agents ) => {
     agentsSensed.clear();
-
-    
     
     for (const a of agents) {
         if ( a.x % 1 != 0 || a.y % 1 != 0 ) // skip intermediate values (0.6 or 0.4)
             continue;
         agentsSensed.set( a.id, a );        
     }
+
+    //taking also teammate's agents
     if (me.teammate != undefined){
         for (const a of Array.from(me.teammate.agents).values()) {
             if ( a.x % 1 != 0 || a.y % 1 != 0 ) // skip intermediate values (0.6 or 0.4)
@@ -166,10 +164,12 @@ client.onParcelsSensing( async ( perceived_parcels ) => {
 client.onMsg( (id, name, msg, reply) => {
 
     let answer = "";
+    //receive information about teammate
     if(msg.teammate != undefined){
         me.teammate = msg.teammate;
     }
 
+    //received when the teammates connects and starts its loop
     if (msg.i_am_here == true){
         me.alone = false;
 
@@ -180,15 +180,20 @@ client.onMsg( (id, name, msg, reply) => {
         answer = true;
     }
 
+    //the teammate says to go to pick up a parcel and to insist to pick it
+    //we use insist == true here because we need the agent to pick up all the parcels
+    //the other agent left on the map
     if(msg.go_to_pick == true){
         pickupParcel(msg.parcel_coordinates.x,msg.parcel_coordinates.y,0,0,true);
     }
 
+    //received when the teammate says us to move away so it can have enough space to elaborate a plan
     if(msg.move_away == true){
         Agent.stopCurrent();
         client.move(msg.direction);
     }
 
+    //received when a parcel is sensed by the teammate
     if (msg.parcel_to_pickup != undefined){
         const my_distance = distance(me,{x: msg.x_p,y: msg.y_p});
         parcels.set( msg.p_id, msg.parcel_to_pickup);

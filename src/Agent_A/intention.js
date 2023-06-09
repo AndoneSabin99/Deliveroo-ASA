@@ -135,7 +135,7 @@ export class IntentionRevision {
                     //try to pick up two parcel at the same time, thus staying stuck between two GoPickUp plans
                     if (me.actual_parcel_to_pick != id){
                         this.parcelsToPick.push(predicate);
-                        console.log("ALREADY PICKING UP A PARCEL. PUT THE OTHER ONE IN THE PARCELS TO PICK QUEUE");
+                        console.log("ALREADY PICKING UP A PARCEL. PUT THE OTHER ONE IN THE QUEUE");
                         continue;
                     }
                 }

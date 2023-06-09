@@ -206,7 +206,6 @@ export function pickupParcel(x, y, id, reward, insist = false){
             //in this case we are in 'pickingup' state, which means we need to decide if the agent should pickup first the
             //new sensed parcel or continue to go to pick the other parcel and then picking up the other one later
             const current = Agent.currentIntention.predicate;
-            //console.log("Currently picking " + current[1] + " " + current[2]);
 
             //check if for some reason there is no a current intention predicate, in order to prevent crashes
             if (current[1] != undefined && current[2] != undefined){
@@ -218,7 +217,6 @@ export function pickupParcel(x, y, id, reward, insist = false){
                 if (distanceCurrent <= distanceNew){
                     Agent.parcelsToPick.push(predicate);
                 }else{
-                    //console.log(current);
                     me.state = state[2]
                     me.actual_parcel_to_pick = id;
                     Agent.push( predicate );

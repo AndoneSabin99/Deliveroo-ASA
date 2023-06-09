@@ -2,7 +2,31 @@
 
 Project for the "Autonomous Software Agents" course at Unitn. This repository contains the implementation of an agent A that interacts with the Deliveroo Api and the implementation of a team of two agents (agent B and agent C) that have a game strategy and cooperate with each other in order to maximize their score.
 
-# Run
+## Repository structure
+Inside the src folder it is possible to find the following content:
+
+```
+
+src
+│
+└───Agent_A
+│   │
+│   └─── source code for Agent A
+│   └─── test folder containing some log file used as validation for Agent A
+│   
+└───Agent_B-C
+│   │
+│   └─── source code for the two Agents B and C
+│   └─── test folder containing some log file used to do experiments for the two agents, useful for optimizing the game strategy
+│
+└───Agent_B-C
+    │
+    └─── optimized version of the source code for the two Agents B and C   
+    └─── test folder containing some log file used as validation for the optimized version
+    
+```
+
+## Run
 
 To run this code first make sure to download and run the server code provided during the course available at this [link](https://github.com/unitn-ASA/Deliveroo.js) 
 

@@ -53,7 +53,9 @@ or, if you want to run the script for team
 
 if you want to run the script for the team of agents. Note that you need also to pass a number parameter which indicates if you want to run the first agent (you have to pass the number 1 as parameter) or the second one (you have to pass the number 2). To run the two agents, you have to open two terminal windows and run on each one of them the script, putting the correct number parameter. Both of them can also run independently, which means that if one agent runs but the other does not, the agent that runs can still be operative and practically behaves as the Agent A. They start to cooperate when the second agent starts its loop (since it communicates with the other agent about its loop initialization) while the first one is running.
 
-NB: at the moment there is a bug inside the generated node module files that makes the script basically never run any plan since it will always result in a bug due to inconsistencies regarding the name of the domain specified inside the problem. To fix this go to "\node_modules\@unitn-asa\pddl-client\src\PddlProblem.js" file and check for line 35 and 36 where there is written:
+## Errors and bugfixes
+    
+It has been detected a bug inside the generated node module files that makes the script basically never run any plan since it will always result in a bug due to inconsistencies regarding the name of the domain specified inside the problem. This bug will appear everytime a new npm install is done, so to fix this go to "\node_modules\@unitn-asa\pddl-client\src\PddlProblem.js" file and check for line 35 and 36 where there is written:
     
 ```
     ...

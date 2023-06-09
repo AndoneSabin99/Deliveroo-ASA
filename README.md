@@ -56,8 +56,10 @@ if you want to run the script for the team of agents. Note that you need also to
 NB: at the moment there is a bug inside the generated node module files that makes the script basically never run any plan since it will always result in a bug due to inconsistencies regarding the name of the domain specified inside the problem. To fix this go to "\node_modules\@unitn-asa\pddl-client\src\PddlProblem.js" file and check for line 35 and 36 where there is written:
     
 ```
+    ...
     (define (problem default)
     (:domain default)
+    ...
 ```
 substitute "default" with "${this.name}" and now the program should work properly.
     

@@ -278,7 +278,7 @@ class GoPickUp extends Plan {
 
         //if no plan has found, then we go back to 'nothing' state
         if (plan == undefined){
-            if (insist){
+            if (insist && agentsSensed.size < 2){
                 me.state = state[2]
                 Agent.push( [ 'go_pick_up', x, y, id, insist ] );
             }else{
@@ -438,7 +438,6 @@ class GoDeliver extends Plan {
                 me.carrying = false;
             }
             
-            //if (!me.alone){
             if (agentsSensed.has(me.teammate.id)){
 
                 let tile_list = Array.from( map.tiles.values() );
@@ -489,7 +488,7 @@ class GoDeliver extends Plan {
 
     //function called when the Agent has to redo the GoDeliver plan
     async RedoGoPutdown(){
-        if (!moved && me.near){
+        if (!moved && agentsSensed.has(me.teammate.id)){
             let tile_list = Array.from( map.tiles.values() ).filter( (tile) => distance(me,tile) == 1 );
             if (tile_list.length == 0){
                 client.say(id_ask, {

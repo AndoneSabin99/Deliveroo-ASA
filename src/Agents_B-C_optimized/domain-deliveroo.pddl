@@ -52,19 +52,22 @@
         )
     )
   
-  (:action pickup
+    (:action pickup
     :parameters (?t ?me)
     :precondition (and (me ?me)(tile ?t) (at ?me ?t)(not (carryingParcel))(parcelTile ?t)(not (blocked ?t)))
-    :effect (and (carryingParcel)))
+    :effect (and (carryingParcel))
+    )
     
-  (:action putdown
+    (:action putdown
     :parameters (?t ?me)
     :precondition (and (me ?me)(tile ?t) (at ?me ?t)(not (deliveryMade))(delivery ?t)(not (blocked ?t)))
-    :effect (and (deliveryMade)))
+    :effect (and (deliveryMade))
+    )
 
-  (:action patrollingDestination
+    (:action patrollingDestination
     :parameters (?t ?me)
     :precondition (and (me ?me)(tile ?t) (at ?me ?t)(not (arrived))(parcelSpawner ?t)(not (blocked ?t)))
-    :effect (and (arrived)))
+    :effect (and (arrived))
+    )
 
 )
